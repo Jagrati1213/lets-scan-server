@@ -5,7 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon src/index.js"
+    "start": "npx tsc && node dist/index.js",
+    "dev": "npx tsc && nodemon dist/index.js"
   },
   "keywords": [
     "javascript",
@@ -16,7 +17,13 @@
   "author": "Jagrati Gupta",
   "license": "ISC",
   "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.12.7",
     "nodemon": "^3.1.0",
-    "prettier": "^3.2.5"
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
   }
 }
