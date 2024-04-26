@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "It is a dashboard for handle all order and payment details",
   "main": "index.js",
-  "type": "module",
   "scripts": {
+    "build": "npx tsc",
     "start": "npx tsc && node dist/index.js",
-    "dev": "npx tsc && nodemon dist/index.js"
+    "dev": "nodemon src/index.ts"
   },
   "keywords": [
     "javascript",
@@ -17,13 +17,20 @@
   "author": "Jagrati Gupta",
   "license": "ISC",
   "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.21",
+    "@types/mongoose": "^5.11.97",
     "@types/node": "^20.12.7",
     "nodemon": "^3.1.0",
     "prettier": "^3.2.5",
+    "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "express": "^4.19.2"
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.3.2"
   }
 }
