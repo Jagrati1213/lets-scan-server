@@ -76,8 +76,9 @@ export const handlerSignIn = async (
           status: 200,
         });
       } else {
-        return res.status(400).json({
+        return res.json({
           message: "Invalid Password",
+          status: 400,
         });
       }
     } else {
