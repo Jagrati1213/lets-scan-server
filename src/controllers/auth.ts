@@ -21,7 +21,6 @@ export const handlerSignUp = async (
     let exitUser = await userCollection.findOne({
       $or: [{ username }, { email }],
     });
-    console.log(exitUser);
     if (exitUser) {
       return res.json({
         message: "Already exit user",
