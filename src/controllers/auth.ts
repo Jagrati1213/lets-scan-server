@@ -70,10 +70,11 @@ export const handlerSignIn = async (
           httpOnly: true, //not accessible from frontend
           sameSite: "lax",
         });
-        return res.status(200).json({
+        return res.json({
           message: "Successfully login",
           user: exitUser,
           token: token,
+          status: 200,
         });
       } else {
         return res.status(400).json({
@@ -81,14 +82,16 @@ export const handlerSignIn = async (
         });
       }
     } else {
-      return res.status(400).json({
+      return res.json({
         message: "User not founded",
+        status: 400,
       });
     }
   } catch (error) {
     console.log("Login Error :", error);
-    res.status(500).json({
+    res.json({
       message: "Internal server error",
+      status: 500,
     });
   }
 };
