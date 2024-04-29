@@ -73,7 +73,6 @@ export const handlerSignIn = async (
         return res.json({
           message: "Successfully login",
           user: exitUser,
-          token: token,
           status: 200,
         });
       } else {
