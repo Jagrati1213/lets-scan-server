@@ -8,7 +8,7 @@ export async function ConnectionWithMongoDb() {
     );
     console.log("DATABASE HOSTED AT", connectionInstance.connection.host);
   } catch (error) {
-    console.log("Mongoose Connection Error", error);
+    console.log("MONGODB CONNECTION FAILED", error);
     process.exit(1);
   }
 }
