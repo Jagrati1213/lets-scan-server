@@ -23,6 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 // Handle file upload
 app.use(express.static("public"));
 
+// Handle browser cookies for access
 app.use(cookieParser());
 
 // router
