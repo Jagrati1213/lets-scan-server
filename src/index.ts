@@ -31,13 +31,16 @@ app.use("/api", router);
 // DB connections
 ConnectionWithMongoDb()
   .then(() => {
+    app.on("error", () => {
+      console.log("SERVER NOT STARTED");
+    });
     // App started
     app.listen(port, () => {
-      console.log("server started!");
+      console.log("SERVER STARTED AT PORT", port);
     });
   })
   .catch(() => {
-    console.log("Mongoose not connected");
+    console.log("DATABASE NOT CONNECT WITH MONGODB");
   });
 
 export { app };
