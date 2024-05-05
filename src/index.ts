@@ -3,7 +3,6 @@ import { ConnectionWithMongoDb } from "./db/connection";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { router } from "./routes/user-route";
 import { userRouter } from "./routes/user.route";
 
 dotenv.config();
@@ -28,7 +27,7 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 // router
-app.use("/api", router);
+// app.use("/api", router);
 app.use("/api/v1/user", userRouter);
 
 // DB connections
