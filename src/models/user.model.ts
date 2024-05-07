@@ -1,9 +1,10 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { userTypes } from "../types";
 
 // CREATE USER SCHEMA
-const userSchema = new Schema(
+const userSchema = new Schema<userTypes>(
   {
     username: {
       type: String,
@@ -23,7 +24,7 @@ const userSchema = new Schema(
       unique: true,
     },
     refreshToken: {
-      String,
+      type: String,
     },
     menuItems: [
       {
@@ -88,4 +89,4 @@ userSchema.methods.generateRefreshToken = function () {
 };
 
 // CREATE USER COLLECTION IN DB
-export const userCollection = mongoose.model("User", userSchema);
+export const userCollection = mongoose.model<userTypes>("User", userSchema);
