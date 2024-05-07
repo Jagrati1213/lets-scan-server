@@ -136,14 +136,13 @@ export const logOutUser = asyncHandler(
       req.user?._id,
       {
         $set: {
-          refreshToken: undefined,
+          refreshToken: null,
         },
       },
       {
         new: true,
       }
     );
-
     return res
       .status(200)
       .clearCookie("accessToken", { httpOnly: true, secure: true })
