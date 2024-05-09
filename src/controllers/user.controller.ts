@@ -36,10 +36,12 @@ export const registerUser = asyncHandler(
 
     // CHECK VALIDATION FOR FIELDS
     if (!username || !email || !password) {
-      throw new ApiErrors({
-        statusCode: 400,
-        statusText: "ALL FIELDS REQUIRED!",
-      });
+      return res.json(
+        new ApiErrors({
+          statusCode: 400,
+          statusText: "ALL FIELDS REQUIRED!",
+        })
+      );
     }
 
     // CHECK USER EXISTENCE WITH USERNAME & EMAIL
@@ -66,10 +68,12 @@ export const registerUser = asyncHandler(
       .select("-password -refreshToken");
 
     if (!userCreated)
-      throw new ApiErrors({
-        statusCode: 400,
-        statusText: "USER NOT CREATED, PLEASE RE-CREATE ACCOUNT!",
-      });
+      return res.json(
+        new ApiErrors({
+          statusCode: 400,
+          statusText: "USER NOT CREATED, PLEASE RE-CREATE ACCOUNT!",
+        })
+      );
 
     // RETURN RESPONSE
     return res.status(201).json(
@@ -89,24 +93,29 @@ export const loginUser = asyncHandler(
 
     // CHECK VALIDATION FOR FIELDS
     if (!username || !password) {
-      throw new ApiErrors({
-        statusCode: 401,
-        statusText: "CREDENTIALS ARE WRONG, TRY AGAIN!",
-      });
+      return res.json(
+        new ApiErrors({
+          statusCode: 401,
+          statusText: "ALL FIELDS ARE REQUIRED, TRY AGAIN!",
+        })
+      );
     }
     // CHECK USER'S EXISTENCE
     const exitsUser = await userCollection.findOne({ username });
     if (!exitsUser || !exitsUser.password)
-      throw new ApiErrors({ statusCode: 400, statusText: "USER NOT EXITS" });
+      return res.json(
+        new ApiErrors({ statusCode: 400, statusText: "USER NOT EXITS" })
+      );
 
     // PASSWORD CHECK
     const passwordCorrect = await exitsUser.isPasswordCorrect(password);
     if (!passwordCorrect)
-      throw new ApiErrors({
-        statusCode: 401,
-        statusText: "INCORRECT PASSWORD!",
-      });
-
+      return res.json(
+        new ApiErrors({
+          statusCode: 401,
+          statusText: "INCORRECT PASSWORD!",
+        })
+      );
     // CREATE TOKEN
     const tokens = await generateAccessAndRefreshToken(exitsUser._id);
     if (!tokens) return;
