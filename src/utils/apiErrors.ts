@@ -1,25 +1,20 @@
 interface ApiErrorOptions {
   statusCode: number;
-  message?: string;
-  errors?: string[];
+  statusText?: string;
 }
 
-class ApiErrors extends Error {
+class ApiErrors {
   public statusCode: number;
-  public message: string;
-  public errors: string[];
+  public statusText: string;
   public data: any;
   public success: boolean;
 
   constructor({
     statusCode,
-    message = "Something went wrong",
-    errors = [],
+    statusText = "Something went wrong",
   }: ApiErrorOptions) {
-    super(message);
     this.statusCode = statusCode;
-    this.message = message;
-    this.errors = errors;
+    this.statusText = statusText;
     this.data = null;
     this.success = false;
   }

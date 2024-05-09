@@ -13,7 +13,10 @@ export const refreshTokenCreate = asyncHandler(
 
     // CHECK TOKEN
     if (!inComingRefreshToken)
-      throw new ApiErrors({ statusCode: 401, message: "UNAUTHORIZED TOKEN" });
+      throw new ApiErrors({
+        statusCode: 401,
+        statusText: "UNAUTHORIZED TOKEN",
+      });
 
     // VERIFY TOKEN
     if (!process.env.REFRESH_TOKEN_KEY) return;
@@ -28,12 +31,12 @@ export const refreshTokenCreate = asyncHandler(
     if (!exitsUser)
       throw new ApiErrors({
         statusCode: 400,
-        message: "USER'S TOKEN IS NOT EXITS!",
+        statusText: "USER'S TOKEN IS NOT EXITS!",
       });
 
     // CHECK TOKENS
     if (inComingRefreshToken !== exitsUser?.refreshToken) {
-      throw new ApiErrors({ statusCode: 400, message: "INVALID TOKEN!" });
+      throw new ApiErrors({ statusCode: 400, statusText: "INVALID TOKEN!" });
     }
 
     // CREATE NEW TOKEN
@@ -54,7 +57,7 @@ export const refreshTokenCreate = asyncHandler(
       .json(
         new ApiResponse({
           statusCode: 200,
-          message: "TOKEN GENERATED SUCCESSFULLY",
+          statusText: "TOKEN GENERATED SUCCESSFULLY",
           data: {
             accessToken: tokens.accessToken,
             refreshToken: tokens.refreshToken,

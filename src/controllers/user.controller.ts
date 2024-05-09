@@ -22,7 +22,10 @@ export const generateAccessAndRefreshToken = async (
     // RETURN TOKEN
     return { accessToken, refreshToken };
   } catch (error) {
-    throw new ApiErrors({ statusCode: 500, message: "CREATED TOKEN ERROR" });
+    throw new ApiErrors({
+      statusCode: 500,
+      statusText: "CREATED TOKEN ERROR",
+    });
   }
 };
 
@@ -33,7 +36,10 @@ export const registerUser = asyncHandler(
 
     // CHECK VALIDATION FOR FIELDS
     if (!username || !email || !password) {
-      throw new ApiErrors({ statusCode: 400, message: "ALL FIELDS REQUIRED!" });
+      throw new ApiErrors({
+        statusCode: 400,
+        statusText: "ALL FIELDS REQUIRED!",
+      });
     }
 
     // CHECK USER EXISTENCE WITH USERNAME & EMAIL
@@ -42,7 +48,9 @@ export const registerUser = asyncHandler(
     });
 
     if (exitsUser) {
-      throw new ApiErrors({ statusCode: 403, message: "USER ALREADY EXITS!" });
+      return res.json(
+        new ApiErrors({ statusCode: 403, statusText: "USER ALREADY EXITS!" })
+      );
     }
 
     // STORE INTO DB & CHECK THE USER CREATED OR NOT
@@ -60,14 +68,14 @@ export const registerUser = asyncHandler(
     if (!userCreated)
       throw new ApiErrors({
         statusCode: 400,
-        message: "USER NOT CREATED, PLEASE RE-CREATE ACCOUNT!",
+        statusText: "USER NOT CREATED, PLEASE RE-CREATE ACCOUNT!",
       });
 
     // RETURN RESPONSE
     return res.status(201).json(
       new ApiResponse({
         statusCode: 201,
-        message: "USER CREATED SUCCESSFULLY.",
+        statusText: "USER CREATED SUCCESSFULLY.",
         data: userCreated,
       })
     );
@@ -83,18 +91,21 @@ export const loginUser = asyncHandler(
     if (!username || !password) {
       throw new ApiErrors({
         statusCode: 401,
-        message: "CREDENTIALS ARE WRONG, TRY AGAIN!",
+        statusText: "CREDENTIALS ARE WRONG, TRY AGAIN!",
       });
     }
     // CHECK USER'S EXISTENCE
     const exitsUser = await userCollection.findOne({ username });
     if (!exitsUser || !exitsUser.password)
-      throw new ApiErrors({ statusCode: 400, message: "USER NOT EXITS" });
+      throw new ApiErrors({ statusCode: 400, statusText: "USER NOT EXITS" });
 
     // PASSWORD CHECK
     const passwordCorrect = await exitsUser.isPasswordCorrect(password);
     if (!passwordCorrect)
-      throw new ApiErrors({ statusCode: 401, message: "INCORRECT PASSWORD!" });
+      throw new ApiErrors({
+        statusCode: 401,
+        statusText: "INCORRECT PASSWORD!",
+      });
 
     // CREATE TOKEN
     const tokens = await generateAccessAndRefreshToken(exitsUser._id);
@@ -118,7 +129,7 @@ export const loginUser = asyncHandler(
       .json(
         new ApiResponse({
           statusCode: 200,
-          message: "SUCCESSFULLY LOGIN",
+          statusText: "SUCCESSFULLY LOGIN",
           data: {
             user: loggedUser,
             accessToken: tokens.accessToken,
@@ -149,7 +160,7 @@ export const logOutUser = asyncHandler(
       .json(
         new ApiResponse({
           statusCode: 200,
-          message: "LOGOUT SUCCESSFULLY.",
+          statusText: "LOGOUT SUCCESSFULLY.",
           data: null,
         })
       );

@@ -1,17 +1,17 @@
 interface apiResponseTypes {
   statusCode: number;
-  message: string;
+  statusText: string;
   data: any;
 }
 
 class ApiResponse {
   public statusCode: number;
-  public message: string;
+  public statusText: string;
   public data: any;
   public success: boolean;
-  constructor({ statusCode, message, data }: apiResponseTypes) {
+  constructor({ statusCode, statusText, data }: apiResponseTypes) {
     this.statusCode = statusCode;
-    this.message = message;
+    this.statusText = statusText;
     this.success = statusCode < 400;
     this.data = data;
   }

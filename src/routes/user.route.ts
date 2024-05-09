@@ -12,5 +12,5 @@ export const userRouter = express.Router();
 // CREATE ROUTER
 userRouter.post("/register", registerUser);
 userRouter.post("/login", loginUser);
-userRouter.post("/logout", authVerify, logOutUser);
+userRouter.get("/logout", authVerify, logOutUser);
 userRouter.post("/refresh-token", refreshTokenCreate);

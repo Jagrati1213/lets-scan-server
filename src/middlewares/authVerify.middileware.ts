@@ -17,7 +17,7 @@ export const authVerify = asyncHandler(
       if (!token || !process.env.ACCESS_TOKEN_KEY)
         throw new ApiErrors({
           statusCode: 401,
-          message: "UNAUTHORIZED TOKEN!",
+          statusText: "UNAUTHORIZED TOKEN!",
         });
 
       // VERIFY TOKEN
@@ -35,7 +35,7 @@ export const authVerify = asyncHandler(
       if (!verifyUser)
         throw new ApiErrors({
           statusCode: 401,
-          message: "INVALID ACCESS TOKEN!",
+          statusText: "INVALID ACCESS TOKEN!",
         });
 
       req.user = verifyUser;
@@ -43,7 +43,7 @@ export const authVerify = asyncHandler(
     } catch (error) {
       throw new ApiErrors({
         statusCode: 401,
-        message: `ERROR IN TOKEN VERIFICATION! ${error}`,
+        statusText: `ERROR IN TOKEN VERIFICATION! ${error}`,
       });
     }
   }
