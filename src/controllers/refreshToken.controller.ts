@@ -6,11 +6,10 @@ import { userCollection } from "../models/user.model";
 import { generateAccessAndRefreshToken } from "./user.controller";
 import { ApiResponse } from "../utils/apiResponse";
 
-export const refreshToken = asyncHandler(
-  async (res: Response, req: Request, next: NextFunction) => {
+export const refreshTokenCreate = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
     // GET TOKEN FROM FRONTEND
-    const inComingRefreshToken =
-      req.cookies?.refreshToken || req.body.refreshToken;
+    const inComingRefreshToken = req.cookies?.refreshToken;
 
     // CHECK TOKEN
     if (!inComingRefreshToken)
@@ -27,7 +26,10 @@ export const refreshToken = asyncHandler(
     // GET EXITS USER DETAILS
     const exitsUser = await userCollection.findById(decodedToken._id);
     if (!exitsUser)
-      throw new ApiErrors({ statusCode: 400, message: "INVALID TOKEN!" });
+      throw new ApiErrors({
+        statusCode: 400,
+        message: "USER'S TOKEN IS NOT EXITS!",
+      });
 
     // CHECK TOKENS
     if (inComingRefreshToken !== exitsUser?.refreshToken) {

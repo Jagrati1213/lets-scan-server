@@ -5,6 +5,7 @@ import {
   registerUser,
 } from "../controllers/user.controller";
 import { authVerify } from "../middlewares/authVerify.middileware";
+import { refreshTokenCreate } from "../controllers/refreshToken.controller";
 
 export const userRouter = express.Router();
 
@@ -12,3 +13,4 @@ export const userRouter = express.Router();
 userRouter.post("/register", registerUser);
 userRouter.post("/login", loginUser);
 userRouter.post("/logout", authVerify, logOutUser);
+userRouter.post("/refresh-token", refreshTokenCreate);
