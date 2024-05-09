@@ -32,7 +32,6 @@ export const registerUser = asyncHandler(
     const { username, password, email } = req.body;
 
     // CHECK VALIDATION FOR FIELDS
-    console.log(username);
     if (!username || !email || !password) {
       throw new ApiErrors({ statusCode: 400, message: "ALL FIELDS REQUIRED!" });
     }
