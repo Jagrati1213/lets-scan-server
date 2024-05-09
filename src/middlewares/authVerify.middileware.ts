@@ -15,10 +15,12 @@ export const authVerify = asyncHandler(
 
       //   CHECK TOKEN EMPTINESS
       if (!token || !process.env.ACCESS_TOKEN_KEY)
-        throw new ApiErrors({
-          statusCode: 401,
-          statusText: "UNAUTHORIZED TOKEN!",
-        });
+        return res.json(
+          new ApiErrors({
+            statusCode: 401,
+            statusText: "UNAUTHORIZED TOKEN!",
+          })
+        );
 
       // VERIFY TOKEN
       const decodedToken = jwt.verify(
@@ -33,18 +35,22 @@ export const authVerify = asyncHandler(
 
       // CHECK USER'S EXISTENCE
       if (!verifyUser)
-        throw new ApiErrors({
-          statusCode: 401,
-          statusText: "INVALID ACCESS TOKEN!",
-        });
+        return res.json(
+          new ApiErrors({
+            statusCode: 401,
+            statusText: "INVALID ACCESS TOKEN!",
+          })
+        );
 
       req.user = verifyUser;
       next();
     } catch (error) {
-      throw new ApiErrors({
-        statusCode: 401,
-        statusText: `ERROR IN TOKEN VERIFICATION! ${error}`,
-      });
+      return res.json(
+        new ApiErrors({
+          statusCode: 401,
+          statusText: `ERROR IN TOKEN VERIFICATION! ${error}`,
+        })
+      );
     }
   }
 );
