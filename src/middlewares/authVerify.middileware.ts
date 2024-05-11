@@ -45,7 +45,7 @@ export const authVerify = asyncHandler(
       req.user = verifyUser;
       next();
     } catch (error) {
-      return res.json(
+      return res.status(401).json(
         new ApiErrors({
           statusCode: 401,
           statusText: `ERROR IN TOKEN VERIFICATION! ${error}`,
