@@ -141,8 +141,6 @@ export const loginUser = asyncHandler(
           statusText: "SUCCESSFULLY LOGIN",
           data: {
             user: loggedUser,
-            accessToken: tokens.accessToken,
-            refreshToken: tokens.refreshToken,
           },
         })
       );
