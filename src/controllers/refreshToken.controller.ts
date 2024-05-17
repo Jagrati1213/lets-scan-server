@@ -58,10 +58,7 @@ export const refreshTokenCreate = asyncHandler(
         new ApiResponse({
           statusCode: 200,
           statusText: "TOKEN GENERATED SUCCESSFULLY",
-          data: {
-            accessToken: tokens.accessToken,
-            refreshToken: tokens.refreshToken,
-          },
+          data: null,
         })
       );
   }
