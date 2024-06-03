@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { userRouter } from "./routes/user.route";
+import { menuRouter } from "./routes/menu.route";
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.use(cookieParser());
 // router
 // app.use("/api", router);
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/menu", menuRouter);
 
 // DB connections
 ConnectionWithMongoDb()
