@@ -4,19 +4,23 @@ import mongoose, { Schema } from "mongoose";
 const menuSchema = new Schema(
   {
     name: {
-      String,
+      type: String,
+      require: true,
+      trim: true,
     },
     description: {
-      String,
+      type: String,
+      trim: true,
     },
     image: {
-      String,
+      type: String,
     },
     rating: {
-      Number,
+      type: Number,
     },
     price: {
-      Number,
+      type: Number,
+      require: true,
     },
     owner: {
       type: Schema.Types.ObjectId,
