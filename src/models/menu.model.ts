@@ -30,4 +30,4 @@ const menuSchema = new Schema(
   { timestamps: true }
 );
 
-export const menuCollection = mongoose.model("Menu", menuSchema);
+export const menuCollection = mongoose.model("MenuList", menuSchema);
