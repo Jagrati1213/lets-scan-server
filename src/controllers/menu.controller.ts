@@ -4,12 +4,19 @@ import { ApiResponse } from "../utils/apiResponse";
 import { ApiErrors } from "../utils/apiErrors";
 import { uploadOnCloudinary } from "../utils/cloudinary";
 import { menuCollection } from "../models/menu.model";
+import { CustomRequest } from "../types";
+import { userCollection } from "../models/user.model";
 
 export const createMenuItem = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: CustomRequest, res: Response, next: NextFunction) => {
     try {
       // GET BODY OF MENU ITEM
       const { name, price, desc } = req.body;
+
+      // GET USER ID FROM REQ OBJECT
+      const exitsUser = await userCollection
+        .findById(req.user?._id)
+        .select("-password -refreshToken");
 
       // CHECK VALIDATION FOR FIELDS
       if (!name || !price || !desc) {
@@ -45,10 +52,13 @@ export const createMenuItem = asyncHandler(
           image: itemImage,
           price: Number(price),
           rating: 2.5,
+          userId: exitsUser?._id,
         });
 
         // CHECK MENU ITEM IS CREATED OR NOT
-        const createdMenuItem = await menuCollection.findById(menuItem._id);
+        const createdMenuItem = await menuCollection
+          .findById(menuItem._id)
+          .select("-userId");
 
         if (!createdMenuItem) {
           return res.json(
@@ -59,6 +69,15 @@ export const createMenuItem = asyncHandler(
           );
         }
 
+        // PUSH THE ITEMS TO USER DB
+        await userCollection.findByIdAndUpdate(
+          { _id: exitsUser?._id },
+          {
+            $push: {
+              menuItems: createdMenuItem?._id,
+            },
+          }
+        );
         // SEND RESPONSE OF MENUITEM
         return res.json(
           new ApiResponse({
