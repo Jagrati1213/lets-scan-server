@@ -10,10 +10,12 @@ const menuSchema = new Schema(
     },
     description: {
       type: String,
+      require: true,
       trim: true,
     },
     image: {
       type: String,
+      require: true,
     },
     rating: {
       type: Number,
