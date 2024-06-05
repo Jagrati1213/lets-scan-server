@@ -29,7 +29,7 @@ const userSchema = new Schema<userTypes>(
     menuItems: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Menu",
+        ref: "MenuList",
       },
     ],
     // orders: [
