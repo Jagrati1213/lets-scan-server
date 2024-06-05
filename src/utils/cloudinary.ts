@@ -16,8 +16,8 @@ export const uploadOnCloudinary = async (localFilePath: string) => {
       resource_type: "image",
     });
 
-    // UPLOADED SUCCESSFULLY
-    console.log("FILE UPLOADED.", response.url);
+    // UNLINK FILE AFTER UPLOAD
+    fs.unlinkSync(localFilePath);
 
     // RETURN URL
     return response.url;
