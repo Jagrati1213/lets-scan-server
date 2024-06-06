@@ -9,7 +9,7 @@ export const getUserDetails = asyncHandler(
   async (req: CustomRequest, res: Response, next: NextFunction) => {
     const exitsUser = await userCollection
       .findById(req.user?._id)
-      .select("-password -refreshToken");
+      .select("-password -refreshToken -createdAt -updatedAt -__v -menuItems");
     if (!exitsUser)
       return res.json(
         new ApiErrors({

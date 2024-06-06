@@ -65,7 +65,7 @@ export const registerUser = asyncHandler(
     // REMOVE PASSWORD AND TOKEN FROM RESPONSE
     const userCreated = await userCollection
       .findById(newUser._id)
-      .select("-password -refreshToken");
+      .select("-password -refreshToken -createdAt -updatedAt -__v");
 
     if (!userCreated)
       return res.json(
@@ -122,7 +122,7 @@ export const loginUser = asyncHandler(
 
     const loggedUser = await userCollection
       .findById(exitsUser?._id)
-      .select("-password -refreshToken");
+      .select("-password -refreshToken -createdAt -updatedAt -__v -menuItems");
 
     // SEND IN COOKIES
     return res
@@ -139,9 +139,7 @@ export const loginUser = asyncHandler(
         new ApiResponse({
           statusCode: 200,
           statusText: "SUCCESSFULLY LOGIN",
-          data: {
-            user: loggedUser,
-          },
+          data: loggedUser,
         })
       );
   }
