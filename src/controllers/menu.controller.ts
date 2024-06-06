@@ -7,6 +7,7 @@ import { menuCollection } from "../models/menu.model";
 import { CustomRequest } from "../types";
 import { userCollection } from "../models/user.model";
 
+// CREATE NEW ITEM
 export const createMenuItem = asyncHandler(
   async (req: CustomRequest, res: Response, next: NextFunction) => {
     try {
@@ -58,7 +59,7 @@ export const createMenuItem = asyncHandler(
         // CHECK MENU ITEM IS CREATED OR NOT
         const createdMenuItem = await menuCollection
           .findById(menuItem._id)
-          .select("-userId");
+          .select("-userId -createdAt -updatedAt -__v");
 
         if (!createdMenuItem) {
           return res.json(
@@ -102,6 +103,40 @@ export const createMenuItem = asyncHandler(
           statusText: `ERROR IN CREATE MENU, ${err}`,
         })
       );
+    }
+  }
+);
+
+// GET ALL MENU ITEMS
+export const getAllMenuList = asyncHandler(
+  async (req: CustomRequest, res: Response) => {
+    try {
+      // GET EXIST USER DETAILS
+      const currentUser = await userCollection
+        .findById(req?.user?._id)
+        .populate({
+          path: "menuItems",
+          select: "-createdAt -updatedAt -__v",
+        });
+
+      if (!currentUser) {
+        return res.json(
+          new ApiErrors({ statusCode: 404, statusText: "USER NOT FOUNDED!" })
+        );
+      }
+      return res.json(
+        new ApiResponse({
+          statusCode: 200,
+          statusText: "USER MENU ITEMS FETCHED SUCCESSFULLY!",
+          data: currentUser?.menuItems,
+        })
+      );
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({
+        success: false,
+        message: "CANNOT FETCH MENULIST",
+      });
     }
   }
 );
