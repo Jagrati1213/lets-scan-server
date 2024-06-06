@@ -59,7 +59,7 @@ export const createMenuItem = asyncHandler(
         // CHECK MENU ITEM IS CREATED OR NOT
         const createdMenuItem = await menuCollection
           .findById(menuItem._id)
-          .select("-userId -createdAt -updatedAt -__v");
+          .select("-createdAt -updatedAt -__v");
 
         if (!createdMenuItem) {
           return res.json(
