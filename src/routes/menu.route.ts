@@ -1,5 +1,5 @@
 import express from "express";
-import { createMenuItem } from "../controllers/menu.controller";
+import { createMenuItem, getAllMenuList } from "../controllers/menu.controller";
 import { authVerify } from "../middlewares/authVerify.middileware";
 import { upload } from "../middlewares/multer.middleware";
 
@@ -13,6 +13,4 @@ menuRouter.post(
   createMenuItem
 );
 
-menuRouter.get("/", (req, res) => {
-  return res.send("hi");
-});
+menuRouter.get("/", authVerify, getAllMenuList);
