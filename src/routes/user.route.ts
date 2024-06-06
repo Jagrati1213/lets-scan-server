@@ -15,4 +15,4 @@ userRouter.post("/register", registerUser);
 userRouter.post("/login", loginUser);
 userRouter.get("/logout", authVerify, logOutUser);
 userRouter.post("/refresh-token", refreshTokenCreate);
-userRouter.post("/user-details", authVerify, getUserDetails);
+userRouter.get("/", authVerify, getUserDetails);
