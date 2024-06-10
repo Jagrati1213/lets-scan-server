@@ -1,5 +1,9 @@
 import express from "express";
-import { createMenuItem, getAllMenuList } from "../controllers/menu.controller";
+import {
+  createMenuItem,
+  getAllMenuList,
+  updateMenuItem,
+} from "../controllers/menu.controller";
 import { authVerify } from "../middlewares/authVerify.middileware";
 import { upload } from "../middlewares/multer.middleware";
 
@@ -12,5 +16,10 @@ menuRouter.post(
   upload.fields([{ name: "image" }]),
   createMenuItem
 );
-
+menuRouter.post(
+  "/update-menu",
+  authVerify,
+  upload.fields([{ name: "image" }]),
+  updateMenuItem
+);
 menuRouter.get("/", authVerify, getAllMenuList);
