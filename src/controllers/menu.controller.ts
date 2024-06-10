@@ -113,7 +113,7 @@ export const updateMenuItem = asyncHandler(
   async (req: CustomRequest, res: Response) => {
     try {
       // GET BODY OF MENU ITEM
-      const { name, price, desc, menuId } = req.body;
+      const { name, price, desc, menuId, image } = req.body;
 
       // CHECK FIELDS
       if (!name || !price || !desc) {
@@ -143,74 +143,53 @@ export const updateMenuItem = asyncHandler(
 
       // TODO: FIX REPLICATION IN CLOUD
 
-      // IF WE HAVE IMAGE THEN STORE IN CLOUD
-      if (req.files && "image" in req.files) {
-        const itemImageLocalPath = req.files?.image[0]?.path;
-        const itemImage = await uploadOnCloudinary(itemImageLocalPath);
-
-        // CHECK IMAGE UPLOADED OR NOT
-        if (!itemImage) {
-          return res.json(
-            new ApiErrors({
-              statusCode: 404,
-              statusText: "IMAGE IS NOT UPLOADED IN CLOUD!",
-            })
-          );
-        }
-
-        // UPDATE MENU ITEM IN DB
-        const updatedMenuItem = await menuCollection.findByIdAndUpdate(
+      // UPDATE MENU ITEM IN DB
+      const updatedMenuItem = await menuCollection
+        .findByIdAndUpdate(
           { _id: menuId },
           {
             name: name,
             description: desc,
-            image: itemImage,
+            image: image,
             price: Number(price),
           },
           {
             new: true,
           }
-        );
+        )
+        .select("-createdAt -updatedAt -__v");
 
-        // CHECK MENU ITEM IS CREATED OR NOT
-        if (!updatedMenuItem) {
-          return res.json(
-            new ApiErrors({
-              statusCode: 409,
-              statusText: "MENU ITEM NOT UPDATED YET, TRY AGAIN!",
-            })
-          );
-        }
-
-        // PUSH THE ITEMS TO USER DB
-        await userCollection.findByIdAndUpdate(
-          { _id: currentUser?._id },
-          {
-            $addToSet: {
-              menuItems: updatedMenuItem?._id, //AVOID REPLICATION
-            },
-          },
-          {
-            new: true,
-          }
-        );
-
-        // SEND RESPONSE OF MENUITEM
-        return res.json(
-          new ApiResponse({
-            statusCode: 201,
-            statusText: "MENU ITEM UPDATED SUCCESSFULLY!",
-            data: updatedMenuItem,
-          })
-        );
-      } else {
+      // CHECK MENU ITEM IS CREATED OR NOT
+      if (!updatedMenuItem) {
         return res.json(
           new ApiErrors({
-            statusCode: 404,
-            statusText: "IMAGE IS REQUIRED!",
+            statusCode: 409,
+            statusText: "MENU ITEM NOT UPDATED YET, TRY AGAIN!",
           })
         );
       }
+
+      // PUSH THE ITEMS TO USER DB
+      await userCollection.findByIdAndUpdate(
+        { _id: currentUser?._id },
+        {
+          $addToSet: {
+            menuItems: updatedMenuItem?._id, //AVOID REPLICATION
+          },
+        },
+        {
+          new: true,
+        }
+      );
+
+      // SEND RESPONSE OF MENUITEM
+      return res.json(
+        new ApiResponse({
+          statusCode: 201,
+          statusText: "MENU ITEM UPDATED SUCCESSFULLY!",
+          data: updatedMenuItem,
+        })
+      );
     } catch (err) {
       return res.json(
         new ApiErrors({
