@@ -1,6 +1,7 @@
 import express from "express";
 import {
   createMenuItem,
+  deleteMenuItem,
   getAllMenuList,
   updateMenuItem,
 } from "../controllers/menu.controller";
@@ -22,4 +23,5 @@ menuRouter.post(
   upload.fields([{ name: "image" }]),
   updateMenuItem
 );
+menuRouter.post("/delete-menu", deleteMenuItem);
 menuRouter.get("/", authVerify, getAllMenuList);
