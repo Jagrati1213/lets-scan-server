@@ -179,7 +179,12 @@ export const updateMenuItem = asyncHandler(
 export const deleteMenuItem = asyncHandler(
   async (req: CustomRequest, res: Response) => {
     // GET MENU ID
-    const { menuId, userId } = req.body;
+    const { menuId } = req.body;
+
+    // GET USER ID FROM REQ OBJECT
+    const currentUser = await userCollection
+      .findById(req.user?._id)
+      .select("-password -refreshToken");
 
     // FIND & DELETE MENU ITEM
     const oldMenuItem = await menuCollection.findByIdAndDelete(menuId);
@@ -195,7 +200,7 @@ export const deleteMenuItem = asyncHandler(
 
     // DELETE FROM USER COLLECTION
     await userCollection.findByIdAndUpdate(
-      { _id: userId },
+      { _id: currentUser?._id },
       {
         $pull: { menuItems: menuId },
       },

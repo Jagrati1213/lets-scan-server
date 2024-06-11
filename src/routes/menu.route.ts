@@ -12,18 +12,8 @@ import { uploadImage } from "../controllers/uploadImage.controller";
 export const menuRouter = express.Router();
 
 // MENU ROUTES
-menuRouter.post(
-  "/create-menu",
-  authVerify,
-  upload.fields([{ name: "image" }]),
-  createMenuItem
-);
-menuRouter.post(
-  "/update-menu",
-  authVerify,
-  upload.fields([{ name: "image" }]),
-  updateMenuItem
-);
+menuRouter.post("/create-menu", authVerify, createMenuItem);
+menuRouter.post("/update-menu", authVerify, updateMenuItem);
 
 menuRouter.post(
   "/upload-image",
@@ -31,5 +21,5 @@ menuRouter.post(
   upload.fields([{ name: "image" }]),
   uploadImage
 );
-menuRouter.post("/delete-menu", deleteMenuItem);
+menuRouter.post("/delete-menu", authVerify, deleteMenuItem);
 menuRouter.get("/", authVerify, getAllMenuList);
