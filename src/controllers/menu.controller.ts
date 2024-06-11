@@ -193,7 +193,7 @@ export const deleteMenuItem = asyncHandler(
       return res.json(
         new ApiErrors({
           statusCode: 400,
-          statusText: "ITEM NOT DELETED!",
+          statusText: "INVALID MENU ITEM!",
         })
       );
     }
