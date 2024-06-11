@@ -186,14 +186,12 @@ export const deleteMenuItem = asyncHandler(
       .findById(req.user?._id)
       .select("-password -refreshToken");
 
-    // FIND & DELETE MENU ITEM
-    const oldMenuItem = await menuCollection.findByIdAndDelete(menuId);
-
-    if (!oldMenuItem) {
+    // CHECK USER PRESENTS
+    if (!currentUser) {
       return res.json(
         new ApiErrors({
           statusCode: 400,
-          statusText: "INVALID MENU ITEM!",
+          statusText: "UNAUTHORIZED USER!",
         })
       );
     }
@@ -208,6 +206,18 @@ export const deleteMenuItem = asyncHandler(
         new: true,
       }
     );
+
+    // FIND & DELETE MENU ITEM
+    const oldMenuItem = await menuCollection.findByIdAndDelete(menuId);
+
+    if (!oldMenuItem) {
+      return res.json(
+        new ApiErrors({
+          statusCode: 400,
+          statusText: "INVALID MENU ITEM!",
+        })
+      );
+    }
 
     // SEND RESPONSE
     return res.json(
