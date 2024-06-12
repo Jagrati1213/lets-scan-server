@@ -1,10 +1,11 @@
-import express, { Application, Response, Request } from "express";
+import express, { Application } from "express";
 import { ConnectionWithMongoDb } from "./db/connection";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { userRouter } from "./routes/user.route";
 import { menuRouter } from "./routes/menu.route";
+import { menuWebsiteRouter } from "./routes/website.route";
 
 dotenv.config();
 
@@ -28,9 +29,9 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 // router
-// app.use("/api", router);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/menu", menuRouter);
+app.use("/api/v1/ordermenuwebsite", menuWebsiteRouter);
 
 // DB connections
 ConnectionWithMongoDb()
