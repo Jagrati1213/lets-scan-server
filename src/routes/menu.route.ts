@@ -1,25 +1,22 @@
 import express from "express";
-import {
-  createMenuItem,
-  deleteMenuItem,
-  getAllMenuList,
-  updateMenuItem,
-} from "../controllers/menu.controller";
 import { authVerify } from "../middlewares/authVerify.middileware";
 import { upload } from "../middlewares/multer.middleware";
-import { uploadImage } from "../controllers/uploadImage.controller";
+import { uploadImageController } from "../controllers/upload/uploadImage.controller";
+import { createMenuItemController } from "../controllers/menu/createMenuItem.controller";
+import { updateMenuItemController } from "../controllers/menu/updateMenuItem.controller";
+import { deleteMenuItemController } from "../controllers/menu/deleteMenuItem.controller";
+import { getMenuListController } from "../controllers/menu/getMenuList.controller";
 
 export const menuRouter = express.Router();
 
 // MENU ROUTES
-menuRouter.post("/create-menu", authVerify, createMenuItem);
-menuRouter.post("/update-menu", authVerify, updateMenuItem);
-
+menuRouter.post("/create-menu", authVerify, createMenuItemController);
+menuRouter.post("/update-menu", authVerify, updateMenuItemController);
+menuRouter.post("/delete-menu", authVerify, deleteMenuItemController);
+menuRouter.get("/", authVerify, getMenuListController);
 menuRouter.post(
   "/upload-image",
   authVerify,
   upload.fields([{ name: "image" }]),
-  uploadImage
+  uploadImageController
 );
-menuRouter.post("/delete-menu", authVerify, deleteMenuItem);
-menuRouter.get("/", authVerify, getAllMenuList);

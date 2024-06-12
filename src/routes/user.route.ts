@@ -1,18 +1,16 @@
 import express from "express";
-import {
-  logOutUser,
-  loginUser,
-  registerUser,
-} from "../controllers/user.controller";
 import { authVerify } from "../middlewares/authVerify.middileware";
-import { refreshTokenCreate } from "../controllers/refreshToken.controller";
-import { getUserDetails } from "../controllers/getUserDetails.controller";
+import { registerController } from "../controllers/auth/register.controller";
+import { loginController } from "../controllers/auth/login.controller";
+import { logOutController } from "../controllers/auth/logout.controller";
+import { refreshTokenController } from "../controllers/token/refreshToken.controller";
+import { getUserDetailsController } from "../controllers/user/getUserDetails.controller";
 
 export const userRouter = express.Router();
 
 // CREATE ROUTER
-userRouter.post("/register", registerUser);
-userRouter.post("/login", loginUser);
-userRouter.get("/logout", authVerify, logOutUser);
-userRouter.post("/refresh-token", refreshTokenCreate);
-userRouter.get("/", authVerify, getUserDetails);
+userRouter.post("/register", registerController);
+userRouter.post("/login", loginController);
+userRouter.get("/logout", authVerify, logOutController);
+userRouter.post("/refresh-token", refreshTokenController);
+userRouter.get("/", authVerify, getUserDetailsController);
