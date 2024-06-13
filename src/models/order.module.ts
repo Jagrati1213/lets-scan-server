@@ -15,8 +15,14 @@ const orderSchema = new Schema(
     },
     orderList: [
       {
-        id: String,
-        quantity: Number,
+        menuId: {
+          type: String,
+          required: true,
+        },
+        quantity: {
+          type: Number,
+          required: true,
+        },
       },
     ],
     orderToken: {
@@ -31,6 +37,11 @@ const orderSchema = new Schema(
     orderStatus: {
       type: String,
       enum: ["pickup", "ready", "success", "reject"],
+    },
+    userId: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
     },
   },
   { timestamps: true }
