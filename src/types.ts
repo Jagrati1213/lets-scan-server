@@ -9,6 +9,7 @@ export interface userTypes extends Document {
   password: string;
   refreshToken: string;
   menuItems: [];
+  orders: [];
   isPasswordCorrect: (password: string) => Promise<boolean>;
   generateAccessToken: () => string;
   generateRefreshToken: () => string;
