@@ -32,12 +32,12 @@ const userSchema = new Schema<userTypes>(
         ref: "MenuList",
       },
     ],
-    // orders: [
-    //   {
-    //     type: Schema.Types.ObjectId,
-    //     ref: "Order",
-    //   },
-    // ],
+    orders: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Order",
+      },
+    ],
   },
   {
     timestamps: true,
