@@ -28,6 +28,10 @@ const orderSchema = new Schema(
       unique: true,
     },
     paymentDetails: {},
+    orderStatus: {
+      type: String,
+      enum: ["pickup", "ready", "success", "reject"],
+    },
   },
   { timestamps: true }
 );
