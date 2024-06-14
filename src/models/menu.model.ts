@@ -24,6 +24,10 @@ const menuSchema = new Schema(
       type: Number,
       require: true,
     },
+    isVeg: {
+      type: Boolean,
+      default: true,
+    },
     userId: {
       type: Schema.Types.ObjectId,
       required: true,
