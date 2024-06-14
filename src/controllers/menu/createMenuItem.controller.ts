@@ -11,7 +11,7 @@ export const createMenuItemController = asyncHandler(
   async (req: CustomRequest, res: Response) => {
     try {
       // GET BODY OF MENU ITEM
-      const { name, price, desc, image } = req.body;
+      const { name, price, desc, image, type } = req.body;
 
       // GET USER ID FROM REQ OBJECT
       const currentUser = await userCollection
@@ -36,6 +36,7 @@ export const createMenuItemController = asyncHandler(
         price: Number(price),
         rating: 2.5,
         userId: currentUser?._id,
+        isVeg: type,
       });
 
       // CHECK MENU ITEM IS CREATED OR NOT
