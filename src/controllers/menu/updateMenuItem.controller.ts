@@ -11,7 +11,7 @@ export const updateMenuItemController = asyncHandler(
   async (req: CustomRequest, res: Response) => {
     try {
       // GET BODY OF MENU ITEM
-      const { name, price, desc, menuId, image } = req.body;
+      const { name, price, desc, menuId, image, type } = req.body;
 
       // CHECK FIELDS
       if (!name || !price || !desc) {
@@ -51,6 +51,7 @@ export const updateMenuItemController = asyncHandler(
               description: desc,
               image: image,
               price: Number(price),
+              isVeg: type,
             },
           },
           {
