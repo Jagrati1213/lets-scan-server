@@ -7,10 +7,10 @@ import { ApiResponse } from "../../utils/apiResponse";
 export const registerController = asyncHandler(
   async (req: Request, res: Response) => {
     // GET USER'S DETAILS
-    const { username, password, email } = req.body;
+    const { username, password, email, restaurant } = req.body;
 
     // CHECK VALIDATION FOR FIELDS
-    if (!username || !email || !password) {
+    if (!username || !email || !password || !restaurant) {
       return res.json(
         new ApiErrors({
           statusCode: 400,
@@ -35,6 +35,7 @@ export const registerController = asyncHandler(
       username: username.toLowerCase(),
       password,
       email,
+      restaurant,
     });
 
     // REMOVE PASSWORD AND TOKEN FROM RESPONSE
