@@ -4,8 +4,8 @@
   "description": "It is a dashboard for handle all order and payment details",
   "main": "index.js",
   "scripts": {
-    "build": "npx tsc",
-    "start": "npx tsc && node dist/index.js",
+    "build": "tsc",
+    "start": "node dist/index.js",
     "dev": "nodemon -r dotenv/config src/index.ts"
   },
   "keywords": [
