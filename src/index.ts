@@ -5,7 +5,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { userRouter } from "./routes/user.route";
 import { menuRouter } from "./routes/menu.route";
-import { menuWebsiteRouter } from "./routes/website.route";
+import { letScanRouter } from "./routes/letScan.route";
 import { orderRouter } from "./routes/order.route";
 
 dotenv.config();
@@ -32,7 +32,7 @@ app.use(cookieParser());
 // router
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/menu", menuRouter);
-app.use("/api/v1/menumuse", menuWebsiteRouter);
+app.use("/api/v1/lets-scan", letScanRouter);
 app.use("/api/v1/order", orderRouter);
 
 // DB connections
