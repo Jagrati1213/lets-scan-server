@@ -41,7 +41,9 @@ export const loginController = asyncHandler(
 
     const loggedUser = await userCollection
       .findById(exitsUser?._id)
-      .select("-password -refreshToken -createdAt -updatedAt -__v -menuItems");
+      .select(
+        "-password -refreshToken -createdAt -updatedAt -__v -menuItems -orders"
+      );
 
     // SEND IN COOKIES
     return res
