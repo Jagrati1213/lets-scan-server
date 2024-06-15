@@ -4,7 +4,7 @@ import { userCollection } from "../../models/user.model";
 import { ApiErrors } from "../../utils/apiErrors";
 import { ApiResponse } from "../../utils/apiResponse";
 
-export const getAllRestaurant = asyncHandler(
+export const getAllVendors = asyncHandler(
   async (req: Request, res: Response) => {
     const allRestaurants = await userCollection
       .find()
