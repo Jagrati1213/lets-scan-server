@@ -6,6 +6,7 @@ import { createMenuItemController } from "../controllers/menu/createMenuItem.con
 import { updateMenuItemController } from "../controllers/menu/updateMenuItem.controller";
 import { deleteMenuItemController } from "../controllers/menu/deleteMenuItem.controller";
 import { getMenuListController } from "../controllers/menu/getMenuList.controller";
+import { changeFoodActive } from "../controllers/menu/changeFoodActive.controller";
 
 export const menuRouter = express.Router();
 
@@ -14,6 +15,7 @@ menuRouter.post("/create-menu", authVerify, createMenuItemController);
 menuRouter.post("/update-menu", authVerify, updateMenuItemController);
 menuRouter.post("/delete-menu", authVerify, deleteMenuItemController);
 menuRouter.get("/", authVerify, getMenuListController);
+menuRouter.post("/active", authVerify, changeFoodActive);
 menuRouter.post(
   "/upload-image",
   authVerify,

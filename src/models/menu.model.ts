@@ -28,6 +28,11 @@ const menuSchema = new Schema(
       type: Boolean,
       default: true,
     },
+    isActive: {
+      type: Boolean,
+      require: true,
+      default: false,
+    },
     userId: {
       type: Schema.Types.ObjectId,
       required: true,
