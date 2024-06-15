@@ -23,6 +23,10 @@ const userSchema = new Schema<userTypes>(
       require: true,
       unique: true,
     },
+    restaurant: {
+      type: String,
+      require: true,
+    },
     refreshToken: {
       type: String,
     },
