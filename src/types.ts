@@ -7,6 +7,7 @@ export interface userTypes extends Document {
   username: string;
   email: string;
   password: string;
+  restaurant: string;
   refreshToken: string;
   menuItems: [];
   orders: [];
