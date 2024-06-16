@@ -12,5 +12,5 @@ export const userRouter = express.Router();
 userRouter.post("/register", registerController);
 userRouter.post("/login", loginController);
 userRouter.get("/logout", authVerify, logOutController);
-userRouter.post("/refresh-token", refreshTokenController);
+userRouter.get("/refresh-token", refreshTokenController);
 userRouter.get("/", authVerify, getUserDetailsController);
