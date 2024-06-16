@@ -11,10 +11,10 @@ import { changeFoodActive } from "../controllers/menu/changeFoodActive.controlle
 export const menuRouter = express.Router();
 
 // MENU ROUTES
+menuRouter.get("/", authVerify, getMenuListController);
+menuRouter.get("/delete-menu/:menuId", authVerify, deleteMenuItemController);
 menuRouter.post("/create-menu", authVerify, createMenuItemController);
 menuRouter.post("/update-menu", authVerify, updateMenuItemController);
-menuRouter.post("/delete-menu", authVerify, deleteMenuItemController);
-menuRouter.get("/", authVerify, getMenuListController);
 menuRouter.post("/active", authVerify, changeFoodActive);
 menuRouter.post(
   "/upload-image",

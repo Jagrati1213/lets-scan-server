@@ -10,7 +10,7 @@ import { ApiResponse } from "../../utils/apiResponse";
 export const deleteMenuItemController = asyncHandler(
   async (req: CustomRequest, res: Response) => {
     // GET MENU ID
-    const { menuId } = req.body;
+    const { menuId } = req.params;
 
     // GET USER ID FROM REQ OBJECT
     const currentUser = await userCollection
