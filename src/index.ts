@@ -7,6 +7,7 @@ import { userRouter } from "./routes/user.route";
 import { menuRouter } from "./routes/menu.route";
 import { letScanRouter } from "./routes/letScan.route";
 import { orderRouter } from "./routes/order.route";
+import { paymentRouter } from "./routes/payement.route";
 
 dotenv.config();
 
@@ -15,7 +16,8 @@ const port = process.env.PORT || 4000;
 
 // Middlewares
 // Handle cors origin
-app.use(cors({ credentials: true, origin: ["*", "http://localhost:3000/"] }));
+// app.use(cors({ credentials: true, origin: ["*", "http://localhost:3000/"] }));
+app.use(cors());
 
 // Handle json as request
 app.use(express.json());
@@ -34,6 +36,7 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/menu", menuRouter);
 app.use("/api/v1/lets-scan", letScanRouter);
 app.use("/api/v1/order", orderRouter);
+app.use("api/v1/payment", paymentRouter);
 
 // DB connections
 ConnectionWithMongoDb()
