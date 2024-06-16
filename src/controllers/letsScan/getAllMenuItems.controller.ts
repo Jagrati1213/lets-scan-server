@@ -8,7 +8,7 @@ import mongoose from "mongoose";
 export const getAllMenuItemsController = asyncHandler(
   async (req: Request, res: Response) => {
     // GET USER ID
-    const { userId } = req.body;
+    const { userId } = req.params;
 
     // VERIFY USER ID
     if (!mongoose.Types.ObjectId.isValid(userId)) {

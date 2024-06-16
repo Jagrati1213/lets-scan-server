@@ -4,5 +4,5 @@ import { getAllVendors } from "../controllers/letsScan/getAllVendors.controller"
 
 export const letScanRouter = express.Router();
 
-letScanRouter.post("/menu-lists", getAllMenuItemsController);
+letScanRouter.get("/menu-lists", getAllMenuItemsController);
 letScanRouter.get("/all-venders", getAllVendors);
