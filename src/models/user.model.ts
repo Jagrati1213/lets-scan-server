@@ -27,6 +27,10 @@ const userSchema = new Schema<userTypes>(
       type: String,
       require: true,
     },
+    isOpen: {
+      type: Boolean,
+      default: false,
+    },
     refreshToken: {
       type: String,
     },
