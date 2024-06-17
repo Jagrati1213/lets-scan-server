@@ -7,18 +7,35 @@ import { updateMenuItemController } from "../controllers/menu/updateMenuItem.con
 import { deleteMenuItemController } from "../controllers/menu/deleteMenuItem.controller";
 import { getMenuListController } from "../controllers/menu/getMenuList.controller";
 import { changeFoodActive } from "../controllers/menu/changeFoodActive.controller";
+import { menuApisHandle } from "../middlewares/menuApis.middleware";
 
 export const menuRouter = express.Router();
 
 // MENU ROUTES
 menuRouter.get("/", authVerify, getMenuListController);
-menuRouter.delete("/delete-menu/:menuId", authVerify, deleteMenuItemController);
-menuRouter.post("/create-menu", authVerify, createMenuItemController);
-menuRouter.put("/update-menu", authVerify, updateMenuItemController);
+menuRouter.delete(
+  "/delete-menu/:menuId",
+  authVerify,
+  menuApisHandle,
+  deleteMenuItemController
+);
+menuRouter.post(
+  "/create-menu",
+  authVerify,
+  menuApisHandle,
+  createMenuItemController
+);
+menuRouter.put(
+  "/update-menu",
+  authVerify,
+  menuApisHandle,
+  updateMenuItemController
+);
 menuRouter.put("/active", authVerify, changeFoodActive);
 menuRouter.post(
   "/upload-image",
   authVerify,
+  menuApisHandle,
   upload.fields([{ name: "image" }]),
   uploadImageController
 );
