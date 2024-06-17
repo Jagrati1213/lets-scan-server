@@ -23,6 +23,10 @@ const orderSchema = new Schema(
           type: Number,
           required: true,
         },
+        price: {
+          type: Number,
+          require: true,
+        },
       },
     ],
     orderToken: {
@@ -33,15 +37,9 @@ const orderSchema = new Schema(
       type: String,
       unique: true,
     },
-    paymentDetails: {
-      orderId: {
-        type: String,
-        require: true,
-      },
-      paymentId: {
-        type: String,
-        require: true,
-      },
+    paymentId: {
+      type: Schema.Types.ObjectId,
+      ref: "Payment",
     },
     orderStatus: {
       type: String,
