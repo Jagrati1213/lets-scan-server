@@ -14,8 +14,12 @@ const paymentSchema = new Schema(
       type: String,
       required: true,
     },
+    orderId: {
+      type: Schema.Types.ObjectId,
+      ref: "Order",
+    },
   },
   { timestamps: true }
 );
 
-export const paymentCollection = mongoose.model("payment", paymentSchema);
+export const paymentCollection = mongoose.model("Payment", paymentSchema);
