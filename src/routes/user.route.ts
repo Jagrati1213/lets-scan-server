@@ -5,6 +5,7 @@ import { loginController } from "../controllers/auth/login.controller";
 import { logOutController } from "../controllers/auth/logout.controller";
 import { refreshTokenController } from "../controllers/token/refreshToken.controller";
 import { getUserDetailsController } from "../controllers/user/getUserDetails.controller";
+import { updateIsOpenController } from "../controllers/user/updateIsOpen.controller";
 
 export const userRouter = express.Router();
 
@@ -14,3 +15,4 @@ userRouter.post("/login", loginController);
 userRouter.get("/logout", authVerify, logOutController);
 userRouter.get("/refresh-token", refreshTokenController);
 userRouter.get("/", authVerify, getUserDetailsController);
+userRouter.put("/open-shop", authVerify, updateIsOpenController);
