@@ -33,7 +33,16 @@ const orderSchema = new Schema(
       type: String,
       unique: true,
     },
-    paymentDetails: {},
+    paymentDetails: {
+      orderId: {
+        type: String,
+        require: true,
+      },
+      paymentId: {
+        type: String,
+        require: true,
+      },
+    },
     orderStatus: {
       type: String,
       enum: ["pickup", "ready", "success", "reject"],
