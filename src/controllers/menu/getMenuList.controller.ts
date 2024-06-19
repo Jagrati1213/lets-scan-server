@@ -1,23 +1,23 @@
 import { Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler";
-import { CustomRequest } from "../../types";
-import { userCollection } from "../../models/user.model";
+import { CustomRequestT } from "../../types";
+import { venderCollection } from "../../models/vender.model";
 import { ApiErrors } from "../../utils/apiErrors";
 import { ApiResponse } from "../../utils/apiResponse";
 
 // GET ALL MENU ITEMS
 export const getMenuListController = asyncHandler(
-  async (req: CustomRequest, res: Response) => {
+  async (req: CustomRequestT, res: Response) => {
     try {
       // GET EXIST USER DETAILS
-      const currentUser = await userCollection
-        .findById(req?.user?._id)
+      const currentVender = await venderCollection
+        .findById(req?.vender?._id)
         .populate({
           path: "menuItems",
           select: "-createdAt -updatedAt -__v",
         });
 
-      if (!currentUser) {
+      if (!currentVender) {
         return res.json(
           new ApiErrors({ statusCode: 404, statusText: "USER NOT FOUNDED!" })
         );
@@ -26,7 +26,7 @@ export const getMenuListController = asyncHandler(
         new ApiResponse({
           statusCode: 200,
           statusText: "MENU ITEMS FETCHED SUCCESSFULLY!",
-          data: currentUser?.menuItems,
+          data: currentVender?.menuItems,
         })
       );
     } catch (err) {

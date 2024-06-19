@@ -2,12 +2,12 @@ import { Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler";
 import { menuCollection } from "../../models/menu.model";
 import { ApiErrors } from "../../utils/apiErrors";
-import { CustomRequest } from "../../types";
-import { userCollection } from "../../models/user.model";
+import { CustomRequestT } from "../../types";
+import { venderCollection } from "../../models/vender.model";
 import { ApiResponse } from "../../utils/apiResponse";
 
 export const changeFoodActive = asyncHandler(
-  async (req: CustomRequest, res: Response) => {
+  async (req: CustomRequestT, res: Response) => {
     try {
       const { activeVal, menuId } = req.body;
 
@@ -23,7 +23,7 @@ export const changeFoodActive = asyncHandler(
         );
       }
       // GET USER ID FROM REQ OBJECT
-      const currentUser = await userCollection.findById(req.user?._id);
+      const currentVender = await venderCollection.findById(req.vender?._id);
 
       // UPDATE MENU ITEM IN DB
       const updatedMenuItem = await menuCollection
@@ -51,8 +51,8 @@ export const changeFoodActive = asyncHandler(
       }
 
       // PUSH THE ITEMS TO USER DB
-      await userCollection.findByIdAndUpdate(
-        { _id: currentUser?._id },
+      await venderCollection.findByIdAndUpdate(
+        { _id: currentVender?._id },
         {
           $addToSet: {
             menuItems: updatedMenuItem?._id, //AVOID REPLICATION

@@ -1,5 +1,5 @@
 import express from "express";
-import { authVerify } from "../middlewares/authVerify.middileware";
+import { venderVerify } from "../middlewares/venderVerify.middileware";
 import { upload } from "../middlewares/multer.middleware";
 import { uploadImageController } from "../controllers/upload/uploadImage.controller";
 import { createMenuItemController } from "../controllers/menu/createMenuItem.controller";
@@ -12,29 +12,29 @@ import { menuApisHandle } from "../middlewares/menuApis.middleware";
 export const menuRouter = express.Router();
 
 // MENU ROUTES
-menuRouter.get("/", authVerify, getMenuListController);
+menuRouter.get("/", venderVerify, getMenuListController);
 menuRouter.delete(
   "/delete-menu/:menuId",
-  authVerify,
+  venderVerify,
   menuApisHandle,
   deleteMenuItemController
 );
 menuRouter.post(
   "/create-menu",
-  authVerify,
+  venderVerify,
   menuApisHandle,
   createMenuItemController
 );
 menuRouter.put(
   "/update-menu",
-  authVerify,
+  venderVerify,
   menuApisHandle,
   updateMenuItemController
 );
-menuRouter.put("/active", authVerify, changeFoodActive);
+menuRouter.put("/active", venderVerify, changeFoodActive);
 menuRouter.post(
   "/upload-image",
-  authVerify,
+  venderVerify,
   menuApisHandle,
   upload.fields([{ name: "image" }]),
   uploadImageController

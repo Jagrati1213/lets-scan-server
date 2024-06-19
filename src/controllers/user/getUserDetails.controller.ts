@@ -1,16 +1,18 @@
 import { Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler";
-import { userCollection } from "../../models/user.model";
+import { venderCollection } from "../../models/vender.model";
 import { ApiErrors } from "../../utils/apiErrors";
 import { ApiResponse } from "../../utils/apiResponse";
-import { CustomRequest } from "../../types";
+import { CustomRequestT } from "../../types";
 
 export const getUserDetailsController = asyncHandler(
-  async (req: CustomRequest, res: Response) => {
-    const exitsUser = await userCollection
-      .findById(req.user?._id)
-      .select("-password -refreshToken -createdAt -updatedAt -__v -menuItems");
-    if (!exitsUser)
+  async (req: CustomRequestT, res: Response) => {
+    const currentVender = await venderCollection
+      .findById(req.vender?._id)
+      .select(
+        "-password -refreshToken -createdAt -updatedAt -__v -menuItems -orders"
+      );
+    if (!currentVender)
       return res.json(
         new ApiErrors({
           statusCode: 400,
@@ -21,7 +23,7 @@ export const getUserDetailsController = asyncHandler(
       new ApiResponse({
         statusCode: 200,
         statusText: "USER EXITS",
-        data: exitsUser,
+        data: currentVender,
       })
     );
   }

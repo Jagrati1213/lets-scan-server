@@ -1,22 +1,22 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { asyncHandler } from "../utils/asyncHandler";
-import { CustomRequest } from "../types";
-import { userCollection } from "../models/user.model";
+import { CustomRequestT } from "../types";
+import { venderCollection } from "../models/vender.model";
 import { ApiErrors } from "../utils/apiErrors";
 
 export const menuApisHandle = asyncHandler(
-  async (req: CustomRequest, res: Response, next: NextFunction) => {
+  async (req: CustomRequestT, res: Response, next: NextFunction) => {
     // GET CURRENT USER
-    const currentUser = await userCollection.findById(req.user?._id);
+    const currentVender = await venderCollection.findById(req.vender?._id);
 
-    if (!currentUser) {
+    if (!currentVender) {
       return res.json(
         new ApiErrors({ statusCode: 404, statusText: "USER NOT FOUNDED!" })
       );
     }
 
     // CALLED NEXT WHEN SHOP IS OPEN
-    if (!currentUser.isOpen) {
+    if (!currentVender.isOpen) {
       next();
     } else {
       return res.json(

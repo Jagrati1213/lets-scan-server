@@ -28,11 +28,12 @@ export const generateOrderIdController = asyncHandler(
         key_secret: process.env.RAZOR_API_KEY_SECRET,
       });
 
+      // TODO: CHANGE RECEIPT
       //   GET ORDERS DETAILS FROM CLIENT
       const options = {
         amount: Number(amount * 100),
         currency: "INR",
-        receipt: "jagratigupta",
+        receipt: "Let's Scan",
         payment_capture: 1,
       };
 

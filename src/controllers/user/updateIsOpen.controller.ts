@@ -1,29 +1,29 @@
 import { Request, Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler";
-import { CustomRequest } from "../../types";
-import { userCollection } from "../../models/user.model";
+import { CustomRequestT } from "../../types";
+import { venderCollection } from "../../models/vender.model";
 import { ApiErrors } from "../../utils/apiErrors";
 import { ApiResponse } from "../../utils/apiResponse";
 
 export const updateIsOpenController = asyncHandler(
-  async (req: CustomRequest, res: Response) => {
+  async (req: CustomRequestT, res: Response) => {
     try {
       // GET VALUE OF IS-OPEN
       const { isOpen } = req.body;
 
       // GET CURRENT USER
-      const currentUser = await userCollection.findById(req?.user?._id);
+      const currentVender = await venderCollection.findById(req?.vender?._id);
 
-      if (!currentUser) {
+      if (!currentVender) {
         return res.json(
           new ApiErrors({ statusCode: 404, statusText: "USER NOT FOUNDED!" })
         );
       }
 
       //   UPDATE USER SHOP
-      const updatedUser = await userCollection
+      const updatedUser = await venderCollection
         .findByIdAndUpdate(
-          currentUser._id,
+          currentVender._id,
           {
             $set: {
               isOpen: isOpen,
@@ -40,7 +40,7 @@ export const updateIsOpenController = asyncHandler(
         return res.json(
           new ApiErrors({
             statusCode: 400,
-            statusText: "SOMETHING WRONG IN SHOP OPEN!",
+            statusText: "SOMETHING WRONG IN SHOP OPENING!",
           })
         );
       }

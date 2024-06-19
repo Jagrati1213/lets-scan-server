@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler";
 import { ApiErrors } from "../../utils/apiErrors";
-import { userCollection } from "../../models/user.model";
+import { venderCollection } from "../../models/vender.model";
 import { ApiResponse } from "../../utils/apiResponse";
 
 export const registerController = asyncHandler(
@@ -20,28 +20,30 @@ export const registerController = asyncHandler(
     }
 
     // CHECK USER EXISTENCE WITH USERNAME & EMAIL
-    const exitsUser = await userCollection.findOne({
+    const currentVender = await venderCollection.findOne({
       $or: [{ username }, { email }],
     });
 
-    if (exitsUser) {
+    if (currentVender) {
       return res.json(
         new ApiErrors({ statusCode: 403, statusText: "USER ALREADY EXITS!" })
       );
     }
 
     // STORE INTO DB & CHECK THE USER CREATED OR NOT
-    const newUser = await userCollection.create({
+    const newVender = await venderCollection.create({
       username: username.toLowerCase(),
       password,
       email,
       restaurant,
     });
 
-    // REMOVE PASSWORD AND TOKEN FROM RESPONSE
-    const userCreated = await userCollection
-      .findById(newUser._id)
-      .select("-password -refreshToken -createdAt -updatedAt -__v");
+    // REMOVE PASSWORD AND OTHERbTHINGS FROM RESPONSE
+    const userCreated = await venderCollection
+      .findById(newVender._id)
+      .select(
+        "-password -refreshToken -createdAt -updatedAt -__v -menuItems -orders"
+      );
 
     if (!userCreated)
       return res.json(

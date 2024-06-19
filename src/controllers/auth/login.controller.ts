@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler";
 import { ApiErrors } from "../../utils/apiErrors";
-import { userCollection } from "../../models/user.model";
+import { venderCollection } from "../../models/vender.model";
 import { generateAccessAndRefreshToken } from "../token/generateToken.controller";
 import { ApiResponse } from "../../utils/apiResponse";
 
@@ -19,15 +19,15 @@ export const loginController = asyncHandler(
         })
       );
     }
-    // CHECK USER'S EXISTENCE
-    const exitsUser = await userCollection.findOne({ username });
-    if (!exitsUser || !exitsUser.password)
+    // CHECK CURRENT VENDER
+    const currentVender = await venderCollection.findOne({ username });
+    if (!currentVender)
       return res.json(
         new ApiErrors({ statusCode: 400, statusText: "USER NOT EXITS" })
       );
 
     // PASSWORD CHECK
-    const passwordCorrect = await exitsUser.isPasswordCorrect(password);
+    const passwordCorrect = await currentVender.isPasswordCorrect(password);
     if (!passwordCorrect)
       return res.json(
         new ApiErrors({
@@ -36,11 +36,11 @@ export const loginController = asyncHandler(
         })
       );
     // CREATE TOKEN
-    const tokens = await generateAccessAndRefreshToken(exitsUser._id);
+    const tokens = await generateAccessAndRefreshToken(currentVender._id);
     if (!tokens) return;
 
-    const loggedUser = await userCollection
-      .findById(exitsUser?._id)
+    const loggedVender = await venderCollection
+      .findById(currentVender?._id)
       .select(
         "-password -refreshToken -createdAt -updatedAt -__v -menuItems -orders"
       );
@@ -60,7 +60,7 @@ export const loginController = asyncHandler(
         new ApiResponse({
           statusCode: 200,
           statusText: "SUCCESSFULLY LOGIN",
-          data: loggedUser,
+          data: loggedVender,
         })
       );
   }

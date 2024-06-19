@@ -1,19 +1,19 @@
 import { Types } from "mongoose";
-import { userCollection } from "../../models/user.model";
+import { venderCollection } from "../../models/vender.model";
 import { ApiErrors } from "../../utils/apiErrors";
 
 export const generateAccessAndRefreshToken = async (
-  userId: Types.ObjectId
+  venderId: Types.ObjectId
 ): Promise<{ accessToken: string; refreshToken: string } | undefined> => {
   try {
-    const user = await userCollection.findOne({ _id: userId });
-    if (!user) return;
-    const accessToken = user.generateAccessToken();
-    const refreshToken = user.generateRefreshToken();
+    const vender = await venderCollection.findOne({ _id: venderId });
+    if (!vender) return;
+    const accessToken = vender.generateAccessToken();
+    const refreshToken = vender.generateRefreshToken();
 
     // SET REFRESH TOKEN IN DB
-    user.refreshToken = refreshToken;
-    await user.save({ validateBeforeSave: false });
+    vender.refreshToken = refreshToken;
+    await vender.save({ validateBeforeSave: false });
 
     // RETURN TOKEN
     return { accessToken, refreshToken };

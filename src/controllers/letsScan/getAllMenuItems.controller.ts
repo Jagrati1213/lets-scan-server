@@ -2,17 +2,17 @@ import { Request, Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler";
 import { ApiResponse } from "../../utils/apiResponse";
 import { ApiErrors } from "../../utils/apiErrors";
-import { userCollection } from "../../models/user.model";
+import { venderCollection } from "../../models/vender.model";
 import mongoose from "mongoose";
 
 export const getAllMenuItemsController = asyncHandler(
   async (req: Request, res: Response) => {
     try {
       // GET USER ID
-      const { userId } = req.params;
+      const { venderId } = req.params;
 
       // VERIFY USER ID
-      if (!mongoose.Types.ObjectId.isValid(userId)) {
+      if (!mongoose.Types.ObjectId.isValid(venderId)) {
         return res.json(
           new ApiErrors({
             statusCode: 400,
@@ -22,10 +22,10 @@ export const getAllMenuItemsController = asyncHandler(
       }
 
       // CHECK USER
-      const currentUser = await userCollection.findById(userId).populate({
+      const currentUser = await venderCollection.findById(venderId).populate({
         path: "menuItems",
         match: { isActive: true },
-        select: "-createdAt -updatedAt -__v -userId -isActive",
+        select: "-createdAt -updatedAt -__v -venderId -isActive",
       });
 
       if (!currentUser) {

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler";
 import mongoose from "mongoose";
 import { ApiErrors } from "../../utils/apiErrors";
-import { userCollection } from "../../models/user.model";
+import { venderCollection } from "../../models/vender.model";
 import { generateOrderTokenAndCode } from "../token/generateOrderToken.controller";
 import { OrderCollection } from "../../models/order.module";
 import { ApiResponse } from "../../utils/apiResponse";
@@ -13,10 +13,10 @@ export const updateOrderController = asyncHandler(
   async (req: Request, res: Response) => {
     try {
       // GET ORDER DETAILS FROM REQUEST
-      const { name, email, orderList, paymentId, userId } = req.body;
+      const { name, email, orderList, paymentId, venderId } = req.body;
 
       // VERIFY USER ID
-      if (!mongoose.Types.ObjectId.isValid(userId)) {
+      if (!mongoose.Types.ObjectId.isValid(venderId)) {
         return res.json(
           new ApiErrors({
             statusCode: 404,
@@ -48,9 +48,9 @@ export const updateOrderController = asyncHandler(
       //TODO: CHECK THAT EMAIL IS ALREADY PRESENT
 
       // FIND CURRENT USER
-      const currentUser = await userCollection.findById(userId);
+      const currentVender = await venderCollection.findById(venderId);
 
-      if (!currentUser) {
+      if (!currentVender) {
         return res.json(
           new ApiErrors({
             statusCode: 404,
@@ -74,8 +74,8 @@ export const updateOrderController = asyncHandler(
         email: email,
         orderToken: token,
         verifyCode: bcryptVerifyCode,
-        orderStatus: "pickup",
-        userId: currentUser._id,
+        orderStatus: "Placed",
+        venderId: currentVender._id,
         orderList: orderList,
       });
 
@@ -100,8 +100,8 @@ export const updateOrderController = asyncHandler(
       }
 
       // PUSH ORDER TO USER COLLECTION
-      await userCollection.findByIdAndUpdate(
-        { _id: userId },
+      await venderCollection.findByIdAndUpdate(
+        { _id: venderId },
         {
           $push: {
             orders: createOrder?._id,

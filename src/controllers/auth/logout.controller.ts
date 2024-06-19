@@ -1,13 +1,13 @@
 import { Response } from "express";
-import { CustomRequest } from "../../types";
+import { CustomRequestT } from "../../types";
 import { asyncHandler } from "../../utils/asyncHandler";
-import { userCollection } from "../../models/user.model";
+import { venderCollection } from "../../models/vender.model";
 import { ApiResponse } from "../../utils/apiResponse";
 
 export const logOutController = asyncHandler(
-  async (req: CustomRequest, res: Response) => {
-    await userCollection.findByIdAndUpdate(
-      req.user?._id,
+  async (req: CustomRequestT, res: Response) => {
+    await venderCollection.findByIdAndUpdate(
+      req.vender?._id,
       {
         $set: {
           refreshToken: null,

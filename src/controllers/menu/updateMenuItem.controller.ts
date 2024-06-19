@@ -1,14 +1,14 @@
 import { Response } from "express";
-import { CustomRequest } from "../../types";
+import { CustomRequestT } from "../../types";
 import { asyncHandler } from "../../utils/asyncHandler";
 import { ApiErrors } from "../../utils/apiErrors";
 import { menuCollection } from "../../models/menu.model";
-import { userCollection } from "../../models/user.model";
+import { venderCollection } from "../../models/vender.model";
 import { ApiResponse } from "../../utils/apiResponse";
 
 // UPDATE MENU ITEM
 export const updateMenuItemController = asyncHandler(
-  async (req: CustomRequest, res: Response) => {
+  async (req: CustomRequestT, res: Response) => {
     try {
       // GET BODY OF MENU ITEM
       const { name, price, desc, menuId, image, type } = req.body;
@@ -35,9 +35,7 @@ export const updateMenuItemController = asyncHandler(
       }
 
       // GET USER ID FROM REQ OBJECT
-      const currentUser = await userCollection
-        .findById(req.user?._id)
-        .select("-password -refreshToken");
+      const currentVender = await venderCollection.findById(req.vender?._id);
 
       // TODO: FIX REPLICATION IN CLOUD
 
@@ -71,8 +69,8 @@ export const updateMenuItemController = asyncHandler(
       }
 
       // PUSH THE ITEMS TO USER DB
-      await userCollection.findByIdAndUpdate(
-        { _id: currentUser?._id },
+      await venderCollection.findByIdAndUpdate(
+        { _id: currentVender?._id },
         {
           $addToSet: {
             menuItems: updatedMenuItem?._id, //AVOID REPLICATION

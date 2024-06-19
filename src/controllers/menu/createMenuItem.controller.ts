@@ -1,6 +1,6 @@
 import { menuCollection } from "../../models/menu.model";
-import { userCollection } from "../../models/user.model";
-import { CustomRequest } from "../../types";
+import { venderCollection } from "../../models/vender.model";
+import { CustomRequestT } from "../../types";
 import { ApiResponse } from "../../utils/apiResponse";
 import { ApiErrors } from "../../utils/apiErrors";
 import { asyncHandler } from "../../utils/asyncHandler";
@@ -8,15 +8,13 @@ import { Response } from "express";
 
 // CREATE NEW ITEM
 export const createMenuItemController = asyncHandler(
-  async (req: CustomRequest, res: Response) => {
+  async (req: CustomRequestT, res: Response) => {
     try {
       // GET BODY OF MENU ITEM
       const { name, price, desc, image, type } = req.body;
 
       // GET USER ID FROM REQ OBJECT
-      const currentUser = await userCollection
-        .findById(req.user?._id)
-        .select("-password -refreshToken");
+      const currentVender = await venderCollection.findById(req.vender?._id);
 
       // CHECK VALIDATION FOR FIELDS
       if (!name || !price || !desc || !image) {
@@ -35,7 +33,7 @@ export const createMenuItemController = asyncHandler(
         image: image,
         price: Number(price),
         rating: 2.5,
-        userId: currentUser?._id,
+        venderId: currentVender?._id,
         isVeg: type,
       });
 
@@ -54,8 +52,8 @@ export const createMenuItemController = asyncHandler(
       }
 
       // PUSH THE ITEMS TO USER DB
-      await userCollection.findByIdAndUpdate(
-        { _id: currentUser?._id },
+      await venderCollection.findByIdAndUpdate(
+        { _id: currentVender?._id },
         {
           $push: {
             menuItems: createdMenuItem?._id,
