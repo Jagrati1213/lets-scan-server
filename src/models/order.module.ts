@@ -1,5 +1,23 @@
-import { timeStamp } from "console";
 import mongoose, { Schema } from "mongoose";
+
+// Define the Order Item Schema with timestamps
+const orderItemSchema = new Schema(
+  {
+    menuId: {
+      type: String,
+      required: true,
+    },
+    quantity: {
+      type: Number,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
 
 const orderSchema = new Schema(
   {
@@ -14,23 +32,7 @@ const orderSchema = new Schema(
       require: true,
       unique: true,
     },
-    orderList: [
-      {
-        menuId: {
-          type: String,
-          required: true,
-        },
-        quantity: {
-          type: Number,
-          required: true,
-        },
-        price: {
-          type: Number,
-          require: true,
-        },
-        timeStamp: true,
-      },
-    ],
+    orderList: [orderItemSchema],
     orderToken: {
       type: String,
       unique: true,
