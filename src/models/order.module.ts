@@ -43,12 +43,18 @@ const orderSchema = new Schema(
     },
     orderStatus: {
       type: String,
-      enum: ["pickup", "ready", "success", "reject"],
+      enum: ["Placed", "Success"],
     },
-    userId: {
+    tableNumber: {
+      type: Number,
+    },
+    note: {
+      type: String,
+    },
+    venderId: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: "User",
+      ref: "Vender",
     },
   },
   { timestamps: true }
