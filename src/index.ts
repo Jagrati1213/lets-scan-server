@@ -3,7 +3,7 @@ import { ConnectionWithMongoDb } from "./db/connection";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { venderRouter } from "./routes/vender.route";
+import { vendorRouter } from "./routes/vendor.route";
 import { menuRouter } from "./routes/menu.route";
 import { letScanRouter } from "./routes/letScan.route";
 import { orderRouter } from "./routes/order.route";
@@ -32,7 +32,7 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 // router
-app.use("/api/v1/vender", venderRouter);
+app.use("/api/v1/vendor", vendorRouter);
 app.use("/api/v1/menu", menuRouter);
 app.use("/api/v1/lets-scan", letScanRouter);
 app.use("/api/v1/order", orderRouter);

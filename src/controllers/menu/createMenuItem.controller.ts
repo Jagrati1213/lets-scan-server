@@ -1,5 +1,5 @@
 import { menuCollection } from "../../models/menu.model";
-import { venderCollection } from "../../models/vender.model";
+import { vendorCollection } from "../../models/vendor.model";
 import { CustomRequestT } from "../../types";
 import { ApiResponse } from "../../utils/apiResponse";
 import { ApiErrors } from "../../utils/apiErrors";
@@ -14,7 +14,7 @@ export const createMenuItemController = asyncHandler(
       const { name, price, desc, image, type } = req.body;
 
       // GET USER ID FROM REQ OBJECT
-      const currentVender = await venderCollection.findById(req.vender?._id);
+      const currentVender = await vendorCollection.findById(req.vendor?._id);
 
       // CHECK VALIDATION FOR FIELDS
       if (!name || !price || !desc || !image) {
@@ -33,7 +33,7 @@ export const createMenuItemController = asyncHandler(
         image: image,
         price: Number(price),
         rating: 2.5,
-        venderId: currentVender?._id,
+        vendorId: currentVender?._id,
         isVeg: type,
       });
 
@@ -52,7 +52,7 @@ export const createMenuItemController = asyncHandler(
       }
 
       // PUSH THE ITEMS TO USER DB
-      await venderCollection.findByIdAndUpdate(
+      await vendorCollection.findByIdAndUpdate(
         { _id: currentVender?._id },
         {
           $push: {

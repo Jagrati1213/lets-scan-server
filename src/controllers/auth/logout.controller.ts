@@ -1,15 +1,15 @@
 import { Response } from "express";
 import { CustomRequestT } from "../../types";
 import { asyncHandler } from "../../utils/asyncHandler";
-import { venderCollection } from "../../models/vender.model";
+import { vendorCollection } from "../../models/vendor.model";
 import { ApiResponse } from "../../utils/apiResponse";
 import { ApiErrors } from "../../utils/apiErrors";
 
 export const logOutController = asyncHandler(
   async (req: CustomRequestT, res: Response) => {
     try {
-      await venderCollection.findByIdAndUpdate(
-        req.vender?._id,
+      await vendorCollection.findByIdAndUpdate(
+        req.vendor?._id,
         {
           $set: {
             refreshToken: null,

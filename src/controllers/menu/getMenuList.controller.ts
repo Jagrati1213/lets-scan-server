@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler";
 import { CustomRequestT } from "../../types";
-import { venderCollection } from "../../models/vender.model";
+import { vendorCollection } from "../../models/vendor.model";
 import { ApiErrors } from "../../utils/apiErrors";
 import { ApiResponse } from "../../utils/apiResponse";
 
@@ -10,8 +10,8 @@ export const getMenuListController = asyncHandler(
   async (req: CustomRequestT, res: Response) => {
     try {
       // GET EXIST USER DETAILS
-      const currentVender = await venderCollection
-        .findById(req?.vender?._id)
+      const currentVender = await vendorCollection
+        .findById(req?.vendor?._id)
         .populate({
           path: "menuItems",
           select: "-createdAt -updatedAt -__v",

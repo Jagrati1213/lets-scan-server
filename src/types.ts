@@ -2,7 +2,7 @@ import { Types } from "mongoose";
 import { Request } from "express";
 
 // CREATE INTERFACE FOR USER
-export interface venderT extends Document {
+export interface vendorT extends Document {
   _id: Types.ObjectId;
   username: string;
   email: string;
@@ -19,5 +19,5 @@ export interface venderT extends Document {
 
 // CREATE INTERFACE FOR CUSTOM REQUEST
 export interface CustomRequestT extends Request {
-  vender?: venderT;
+  vendor?: vendorT;
 }

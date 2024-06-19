@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler";
-import { venderCollection } from "../../models/vender.model";
+import { vendorCollection } from "../../models/vendor.model";
 import { ApiErrors } from "../../utils/apiErrors";
 import { ApiResponse } from "../../utils/apiResponse";
 
 export const getAllVendors = asyncHandler(
   async (req: Request, res: Response) => {
     try {
-      const allRestaurants = await venderCollection
+      const allRestaurants = await vendorCollection
         .find()
         .select(
           "-username -password -email -menuItems -orders -updatedAt -createdAt -refreshToken -__v"

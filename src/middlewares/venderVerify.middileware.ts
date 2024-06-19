@@ -2,10 +2,10 @@ import { NextFunction, Response } from "express";
 import { asyncHandler } from "../utils/asyncHandler";
 import { ApiErrors } from "../utils/apiErrors";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { venderCollection } from "../models/vender.model";
+import { vendorCollection } from "../models/vendor.model";
 import { CustomRequestT } from "../types";
 
-export const venderVerify = asyncHandler(
+export const vendorVerify = asyncHandler(
   async (req: CustomRequestT, res: Response, next: NextFunction) => {
     try {
       // GET TOKEN
@@ -29,7 +29,7 @@ export const venderVerify = asyncHandler(
       ) as JwtPayload;
 
       // GET USER DETAILS
-      const verifyVender = await venderCollection
+      const verifyVender = await vendorCollection
         .findById({ _id: decodedToken?._id })
         .select("-password -refreshToken");
 
@@ -42,7 +42,7 @@ export const venderVerify = asyncHandler(
           })
         );
 
-      req.vender = verifyVender;
+      req.vendor = verifyVender;
       next();
     } catch (error) {
       return res.status(401).json(

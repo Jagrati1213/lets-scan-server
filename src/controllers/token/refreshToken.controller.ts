@@ -2,7 +2,7 @@ import { Response, Request } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { asyncHandler } from "../../utils/asyncHandler";
 import { ApiErrors } from "../../utils/apiErrors";
-import { venderCollection } from "../../models/vender.model";
+import { vendorCollection } from "../../models/vendor.model";
 import { generateAccessAndRefreshToken } from "./generateToken.controller";
 import { ApiResponse } from "../../utils/apiResponse";
 
@@ -30,7 +30,7 @@ export const refreshTokenController = asyncHandler(
       ) as JwtPayload;
 
       // GET EXITS USER DETAILS
-      const currentVender = await venderCollection.findById(decodedToken._id);
+      const currentVender = await vendorCollection.findById(decodedToken._id);
       if (!currentVender)
         return res.json(
           new ApiErrors({

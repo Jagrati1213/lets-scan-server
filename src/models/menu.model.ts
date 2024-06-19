@@ -33,10 +33,10 @@ const menuSchema = new Schema(
       require: true,
       default: false,
     },
-    venderId: {
+    vendorId: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: "Vender",
+      ref: "Vendor",
     },
   },
   { timestamps: true }

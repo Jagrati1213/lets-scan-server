@@ -1,6 +1,6 @@
 import { Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler";
-import { venderCollection } from "../../models/vender.model";
+import { vendorCollection } from "../../models/vendor.model";
 import { ApiErrors } from "../../utils/apiErrors";
 import { ApiResponse } from "../../utils/apiResponse";
 import { CustomRequestT } from "../../types";
@@ -8,8 +8,8 @@ import { CustomRequestT } from "../../types";
 export const getUserDetailsController = asyncHandler(
   async (req: CustomRequestT, res: Response) => {
     try {
-      const currentVender = await venderCollection
-        .findById(req.vender?._id)
+      const currentVender = await vendorCollection
+        .findById(req.vendor?._id)
         .select(
           "-password -refreshToken -createdAt -updatedAt -__v -menuItems -orders"
         );

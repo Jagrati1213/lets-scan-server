@@ -30,7 +30,6 @@ const orderSchema = new Schema(
     email: {
       type: String,
       require: true,
-      unique: true,
     },
     orderList: [orderItemSchema],
     orderToken: {
@@ -55,10 +54,10 @@ const orderSchema = new Schema(
     note: {
       type: String,
     },
-    venderId: {
+    vendorId: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: "Vender",
+      ref: "Vendor",
     },
   },
   { timestamps: true }

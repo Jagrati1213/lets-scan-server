@@ -1,10 +1,10 @@
 import mongoose, { Schema, Types } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { venderT } from "../types";
+import { vendorT } from "../types";
 
 // CREATE USER SCHEMA
-const venderSchema = new Schema<venderT>(
+const vendorSchema = new Schema<vendorT>(
   {
     username: {
       type: String,
@@ -53,7 +53,7 @@ const venderSchema = new Schema<venderT>(
 );
 
 // CREATE HASH PASSWORD BEFORE SAVING
-venderSchema.pre("save", async function (next) {
+vendorSchema.pre("save", async function (next) {
   if (this.password && this.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 10);
     next();
@@ -63,12 +63,12 @@ venderSchema.pre("save", async function (next) {
 });
 
 // COMPARE PASSWORD WITH BCRYPT
-venderSchema.methods.isPasswordCorrect = async function (password: string) {
+vendorSchema.methods.isPasswordCorrect = async function (password: string) {
   return await bcrypt.compare(password, this.password); // return boolean
 };
 
 // CREATE ACCESS TOKEN
-venderSchema.methods.generateAccessToken = function () {
+vendorSchema.methods.generateAccessToken = function () {
   if (!process.env.ACCESS_TOKEN_KEY) return;
   return jwt.sign(
     {
@@ -83,7 +83,7 @@ venderSchema.methods.generateAccessToken = function () {
 };
 
 // CREATE REFRESH TOKEN
-venderSchema.methods.generateRefreshToken = function () {
+vendorSchema.methods.generateRefreshToken = function () {
   if (!process.env.REFRESH_TOKEN_KEY) return;
   return jwt.sign(
     {
@@ -97,4 +97,4 @@ venderSchema.methods.generateRefreshToken = function () {
 };
 
 // CREATE USER COLLECTION IN DB
-export const venderCollection = mongoose.model<venderT>("Vender", venderSchema);
+export const vendorCollection = mongoose.model<vendorT>("Vendor", vendorSchema);

@@ -3,7 +3,7 @@ import { asyncHandler } from "../../utils/asyncHandler";
 import { menuCollection } from "../../models/menu.model";
 import { ApiErrors } from "../../utils/apiErrors";
 import { CustomRequestT } from "../../types";
-import { venderCollection } from "../../models/vender.model";
+import { vendorCollection } from "../../models/vendor.model";
 import { ApiResponse } from "../../utils/apiResponse";
 
 export const changeFoodActive = asyncHandler(
@@ -23,7 +23,7 @@ export const changeFoodActive = asyncHandler(
         );
       }
       // GET USER ID FROM REQ OBJECT
-      const currentVender = await venderCollection.findById(req.vender?._id);
+      const currentVender = await vendorCollection.findById(req.vendor?._id);
 
       // UPDATE MENU ITEM IN DB
       const updatedMenuItem = await menuCollection
@@ -51,7 +51,7 @@ export const changeFoodActive = asyncHandler(
       }
 
       // PUSH THE ITEMS TO USER DB
-      await venderCollection.findByIdAndUpdate(
+      await vendorCollection.findByIdAndUpdate(
         { _id: currentVender?._id },
         {
           $addToSet: {

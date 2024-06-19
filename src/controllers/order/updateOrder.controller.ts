@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler";
 import mongoose from "mongoose";
 import { ApiErrors } from "../../utils/apiErrors";
-import { venderCollection } from "../../models/vender.model";
+import { vendorCollection } from "../../models/vendor.model";
 import { generateOrderTokenAndCode } from "../token/generateOrderToken.controller";
 import { OrderCollection } from "../../models/order.module";
 import { ApiResponse } from "../../utils/apiResponse";
@@ -13,14 +13,15 @@ export const updateOrderController = asyncHandler(
   async (req: Request, res: Response) => {
     try {
       // GET ORDER DETAILS FROM REQUEST
-      const { name, email, orderList, paymentId, venderId } = req.body;
+      const { name, email, orderList, paymentId, vendorId, tableNumber, note } =
+        req.body;
 
       // VERIFY USER ID
-      if (!mongoose.Types.ObjectId.isValid(venderId)) {
+      if (!mongoose.Types.ObjectId.isValid(vendorId)) {
         return res.json(
           new ApiErrors({
             statusCode: 404,
-            statusText: "Invalid USER ID",
+            statusText: "INVALID USER ID",
           })
         );
       }
@@ -45,10 +46,8 @@ export const updateOrderController = asyncHandler(
         );
       }
 
-      //TODO: CHECK THAT EMAIL IS ALREADY PRESENT
-
       // FIND CURRENT USER
-      const currentVender = await venderCollection.findById(venderId);
+      const currentVender = await vendorCollection.findById(vendorId);
 
       if (!currentVender) {
         return res.json(
@@ -75,20 +74,17 @@ export const updateOrderController = asyncHandler(
         orderToken: token,
         verifyCode: bcryptVerifyCode,
         orderStatus: "Placed",
-        venderId: currentVender._id,
+        vendorId: currentVender._id,
         orderList: orderList,
+        tableNumber: tableNumber,
+        note: note,
+        paymentId: paymentId,
       });
 
-      const updatedOrder = await OrderCollection.findByIdAndUpdate(
-        newOrder._id,
-        {
-          paymentId: paymentId,
-        },
-        { new: true }
-      );
-
       // VERIFY ORDER
-      const createOrder = await OrderCollection.findById(updatedOrder?._id);
+      const createOrder = await OrderCollection.findById(newOrder?._id).select(
+        "-paymentId -vendorId -createdAt -updatedAt -__v"
+      );
 
       if (!createOrder) {
         return res.json(
@@ -100,8 +96,8 @@ export const updateOrderController = asyncHandler(
       }
 
       // PUSH ORDER TO USER COLLECTION
-      await venderCollection.findByIdAndUpdate(
-        { _id: venderId },
+      await vendorCollection.findByIdAndUpdate(
+        { _id: vendorId },
         {
           $push: {
             orders: createOrder?._id,

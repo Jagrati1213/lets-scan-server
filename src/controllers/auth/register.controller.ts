@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler";
 import { ApiErrors } from "../../utils/apiErrors";
-import { venderCollection } from "../../models/vender.model";
+import { vendorCollection } from "../../models/vendor.model";
 import { ApiResponse } from "../../utils/apiResponse";
 
 export const registerController = asyncHandler(
@@ -21,7 +21,7 @@ export const registerController = asyncHandler(
       }
 
       // CHECK USER EXISTENCE WITH USERNAME & EMAIL
-      const currentVender = await venderCollection.findOne({
+      const currentVender = await vendorCollection.findOne({
         $or: [{ username }, { email }],
       });
 
@@ -32,7 +32,7 @@ export const registerController = asyncHandler(
       }
 
       // STORE INTO DB & CHECK THE USER CREATED OR NOT
-      const newVender = await venderCollection.create({
+      const newVender = await vendorCollection.create({
         username: username.toLowerCase(),
         password,
         email,
@@ -40,7 +40,7 @@ export const registerController = asyncHandler(
       });
 
       // REMOVE PASSWORD AND OTHERbTHINGS FROM RESPONSE
-      const userCreated = await venderCollection
+      const userCreated = await vendorCollection
         .findById(newVender._id)
         .select(
           "-password -refreshToken -createdAt -updatedAt -__v -menuItems -orders"

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler";
 import { ApiErrors } from "../../utils/apiErrors";
-import { venderCollection } from "../../models/vender.model";
+import { vendorCollection } from "../../models/vendor.model";
 import { generateAccessAndRefreshToken } from "../token/generateToken.controller";
 import { ApiResponse } from "../../utils/apiResponse";
 
@@ -21,7 +21,7 @@ export const loginController = asyncHandler(
         );
       }
       // CHECK CURRENT VENDER
-      const currentVender = await venderCollection.findOne({ username });
+      const currentVender = await vendorCollection.findOne({ username });
       if (!currentVender)
         return res.json(
           new ApiErrors({ statusCode: 400, statusText: "USER NOT EXITS" })
@@ -40,7 +40,7 @@ export const loginController = asyncHandler(
       const tokens = await generateAccessAndRefreshToken(currentVender._id);
       if (!tokens) return;
 
-      const loggedVender = await venderCollection
+      const loggedVender = await vendorCollection
         .findById(currentVender?._id)
         .select(
           "-password -refreshToken -createdAt -updatedAt -__v -menuItems -orders"

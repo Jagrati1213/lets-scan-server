@@ -3,7 +3,7 @@ import { CustomRequestT } from "../../types";
 import { asyncHandler } from "../../utils/asyncHandler";
 import { ApiErrors } from "../../utils/apiErrors";
 import { menuCollection } from "../../models/menu.model";
-import { venderCollection } from "../../models/vender.model";
+import { vendorCollection } from "../../models/vendor.model";
 import { ApiResponse } from "../../utils/apiResponse";
 
 // UPDATE MENU ITEM
@@ -35,7 +35,7 @@ export const updateMenuItemController = asyncHandler(
       }
 
       // GET USER ID FROM REQ OBJECT
-      const currentVender = await venderCollection.findById(req.vender?._id);
+      const currentVender = await vendorCollection.findById(req.vendor?._id);
 
       // TODO: FIX REPLICATION IN CLOUD
 
@@ -69,7 +69,7 @@ export const updateMenuItemController = asyncHandler(
       }
 
       // PUSH THE ITEMS TO USER DB
-      await venderCollection.findByIdAndUpdate(
+      await vendorCollection.findByIdAndUpdate(
         { _id: currentVender?._id },
         {
           $addToSet: {

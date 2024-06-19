@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler";
 import { CustomRequestT } from "../../types";
-import { venderCollection } from "../../models/vender.model";
+import { vendorCollection } from "../../models/vendor.model";
 import { ApiErrors } from "../../utils/apiErrors";
 import { menuCollection } from "../../models/menu.model";
 import { ApiResponse } from "../../utils/apiResponse";
@@ -14,7 +14,7 @@ export const deleteMenuItemController = asyncHandler(
       const { menuId } = req.params;
 
       // GET USER ID FROM REQ OBJECT
-      const currentVender = await venderCollection.findById(req.vender?._id);
+      const currentVender = await vendorCollection.findById(req.vendor?._id);
 
       // CHECK USER PRESENTS
       if (!currentVender) {
@@ -27,7 +27,7 @@ export const deleteMenuItemController = asyncHandler(
       }
 
       // DELETE FROM USER COLLECTION
-      await venderCollection.findByIdAndUpdate(
+      await vendorCollection.findByIdAndUpdate(
         { _id: currentVender?._id },
         {
           $pull: { menuItems: menuId },
