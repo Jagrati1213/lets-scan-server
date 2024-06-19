@@ -1,3 +1,4 @@
+import { timeStamp } from "console";
 import mongoose, { Schema } from "mongoose";
 
 const orderSchema = new Schema(
@@ -27,6 +28,7 @@ const orderSchema = new Schema(
           type: Number,
           require: true,
         },
+        timeStamp: true,
       },
     ],
     orderToken: {
