@@ -30,11 +30,12 @@ export const getMenuListController = asyncHandler(
         })
       );
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({
-        success: false,
-        message: "CANNOT FETCH MENULIST",
-      });
+      return res.json(
+        new ApiErrors({
+          statusCode: 400,
+          statusText: "CANNOT FETCH MENULIST",
+        })
+      );
     }
   }
 );

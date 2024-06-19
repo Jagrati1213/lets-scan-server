@@ -70,7 +70,6 @@ export const createMenuItemController = asyncHandler(
         })
       );
     } catch (err) {
-      console.error("ERROR IN CREATE MENU ITEM FAILED :", err);
       return res.json(
         new ApiErrors({
           statusCode: 400,
