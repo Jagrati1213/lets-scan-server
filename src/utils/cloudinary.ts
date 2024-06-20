@@ -14,6 +14,7 @@ export const uploadOnCloudinary = async (localFilePath: string) => {
     // UPLOADED FILE
     const response = await cloudinary.uploader.upload(localFilePath, {
       resource_type: "image",
+      folder: "Let's Scan",
     });
 
     // UNLINK FILE AFTER UPLOAD
