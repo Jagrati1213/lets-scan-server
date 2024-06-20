@@ -1,1 +1,1 @@
-export const DB_NAME: string = "Let'sScan";
+export const DB_NAME: string = "let's-scan";
