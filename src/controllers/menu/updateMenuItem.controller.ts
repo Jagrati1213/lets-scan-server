@@ -34,7 +34,7 @@ export const updateMenuItemController = asyncHandler(
         );
       }
 
-      // GET USER ID FROM REQ OBJECT
+      // GET VENDOR ID FROM REQ OBJECT
       const currentVender = await vendorCollection.findById(req.vendor?._id);
 
       // TODO: FIX REPLICATION IN CLOUD
@@ -68,7 +68,7 @@ export const updateMenuItemController = asyncHandler(
         );
       }
 
-      // PUSH THE ITEMS TO USER DB
+      // PUSH THE ITEMS TO VENDOR DB
       await vendorCollection.findByIdAndUpdate(
         { _id: currentVender?._id },
         {

@@ -11,16 +11,16 @@ export const updateIsOpenController = asyncHandler(
       // GET VALUE OF IS-OPEN
       const { isOpen } = req.body;
 
-      // GET CURRENT USER
+      // GET CURRENT VENDOR
       const currentVender = await vendorCollection.findById(req?.vendor?._id);
 
       if (!currentVender) {
         return res.json(
-          new ApiErrors({ statusCode: 404, statusText: "USER NOT FOUNDED!" })
+          new ApiErrors({ statusCode: 404, statusText: "VENDOR NOT FOUNDED!" })
         );
       }
 
-      //   UPDATE USER SHOP
+      //   UPDATE VENDOR SHOP
       const updatedUser = await vendorCollection
         .findByIdAndUpdate(
           currentVender._id,
@@ -57,7 +57,7 @@ export const updateIsOpenController = asyncHandler(
       return res.json(
         new ApiErrors({
           statusCode: 500,
-          statusText: "ERROR IN SHOP OPEN",
+          statusText: `ERROR IN SHOP OPEN, ${error}`,
         })
       );
     }

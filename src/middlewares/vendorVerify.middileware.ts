@@ -28,12 +28,12 @@ export const vendorVerify = asyncHandler(
         process.env.ACCESS_TOKEN_KEY
       ) as JwtPayload;
 
-      // GET USER DETAILS
+      // GET VENDOR DETAILS
       const verifyVender = await vendorCollection
         .findById({ _id: decodedToken?._id })
         .select("-password -refreshToken");
 
-      // CHECK USER'S EXISTENCE
+      // CHECK VENDOR'S EXISTENCE
       if (!verifyVender)
         return res.json(
           new ApiErrors({
@@ -45,7 +45,7 @@ export const vendorVerify = asyncHandler(
       req.vendor = verifyVender;
       next();
     } catch (error) {
-      return res.status(401).json(
+      return res.json(
         new ApiErrors({
           statusCode: 401,
           statusText: `ERROR IN TOKEN VERIFICATION! ${error}`,

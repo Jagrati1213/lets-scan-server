@@ -1,56 +1,54 @@
 import { Request, Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler";
-import { ApiResponse } from "../../utils/apiResponse";
 import { ApiErrors } from "../../utils/apiErrors";
+import { ApiResponse } from "../../utils/apiResponse";
 import { vendorCollection } from "../../models/vendor.model";
 import mongoose from "mongoose";
 
-export const getAllMenuItemsController = asyncHandler(
+export const getOrderDetailsController = asyncHandler(
   async (req: Request, res: Response) => {
     try {
-      // GET VENDER ID
+      // GET VENDOR ID
       const { vendorId } = req.params;
 
-      // VERIFY VENDER ID
+      // VERIFY ID
       if (!mongoose.Types.ObjectId.isValid(vendorId)) {
         return res.json(
           new ApiErrors({
             statusCode: 400,
-            statusText: "INVALID VENDER ID",
+            statusText: "INVALID VENDOR ID",
           })
         );
       }
 
-      // CHECK VENDER
+      // CHECK USER
       const currentVendor = await vendorCollection.findById(vendorId).populate({
-        path: "menuItems",
-        match: { isActive: true },
-        select: "-createdAt -updatedAt -__v -vendorId -isActive",
+        path: "orders",
+        select: "-paymentId -vendorId -createdAt -updatedAt -__v",
       });
 
       if (!currentVendor) {
         return res.json(
           new ApiErrors({
             statusCode: 404,
-            statusText: "VENDER NOT FOUNDED!",
+            statusText: "VENDOR NOT FOUNDED!",
           })
         );
       }
       return res.json(
         new ApiResponse({
           statusCode: 200,
-          statusText: "ALL MENU LISTS",
+          statusText: "ALL ORDERS LIST",
           data: {
-            menuItems: currentVendor.menuItems,
-            isOpen: currentVendor.isOpen,
+            orders: currentVendor.orders,
           },
         })
       );
     } catch (error) {
       return res.json(
         new ApiErrors({
-          statusCode: 500,
-          statusText: `ALL MENU ERROR, ${error}`,
+          statusCode: 400,
+          statusText: `ERROR IN ORDER DETAILS, ${error}`,
         })
       );
     }

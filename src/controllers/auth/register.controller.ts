@@ -7,7 +7,7 @@ import { ApiResponse } from "../../utils/apiResponse";
 export const registerController = asyncHandler(
   async (req: Request, res: Response) => {
     try {
-      // GET USER'S DETAILS
+      // GET VENDOR'S DETAILS
       const { username, password, email, restaurant } = req.body;
 
       // CHECK VALIDATION FOR FIELDS
@@ -20,18 +20,21 @@ export const registerController = asyncHandler(
         );
       }
 
-      // CHECK USER EXISTENCE WITH USERNAME & EMAIL
+      // CHECK VENDOR EXISTENCE WITH USERNAME & EMAIL
       const currentVender = await vendorCollection.findOne({
         $or: [{ username }, { email }],
       });
 
       if (currentVender) {
         return res.json(
-          new ApiErrors({ statusCode: 403, statusText: "USER ALREADY EXITS!" })
+          new ApiErrors({
+            statusCode: 403,
+            statusText: "VENDOR ALREADY EXITS!",
+          })
         );
       }
 
-      // STORE INTO DB & CHECK THE USER CREATED OR NOT
+      // STORE INTO DB & CHECK THE VENDOR CREATED OR NOT
       const newVender = await vendorCollection.create({
         username: username.toLowerCase(),
         password,
@@ -39,18 +42,18 @@ export const registerController = asyncHandler(
         restaurant,
       });
 
-      // REMOVE PASSWORD AND OTHERbTHINGS FROM RESPONSE
-      const userCreated = await vendorCollection
+      // REMOVE PASSWORD AND OTHER THINGS FROM RESPONSE
+      const vendorCreated = await vendorCollection
         .findById(newVender._id)
         .select(
           "-password -refreshToken -createdAt -updatedAt -__v -menuItems -orders"
         );
 
-      if (!userCreated)
+      if (!vendorCreated)
         return res.json(
           new ApiErrors({
             statusCode: 400,
-            statusText: "USER NOT CREATED, PLEASE RE-CREATE ACCOUNT!",
+            statusText: "VENDOR NOT CREATED, PLEASE RE-CREATE ACCOUNT!",
           })
         );
 
@@ -58,15 +61,15 @@ export const registerController = asyncHandler(
       return res.status(201).json(
         new ApiResponse({
           statusCode: 201,
-          statusText: "USER CREATED SUCCESSFULLY.",
-          data: userCreated,
+          statusText: "VENDOR CREATED SUCCESSFULLY.",
+          data: vendorCreated,
         })
       );
     } catch (error) {
       return res.json(
         new ApiErrors({
           statusCode: 401,
-          statusText: "SOMETHING IS WRONG< TRY AGAIN!",
+          statusText: `REGISTER ERROR, ${error}`,
         })
       );
     }

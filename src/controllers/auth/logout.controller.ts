@@ -34,7 +34,7 @@ export const logOutController = asyncHandler(
       return res.json(
         new ApiErrors({
           statusCode: 401,
-          statusText: "SOMETHING PROBLEM IN LOGOUT!",
+          statusText: `LOGOUT ERROR, ${error}`,
         })
       );
     }

@@ -27,9 +27,12 @@ export const uploadImageController = asyncHandler(
         })
       );
     } else {
-      return res.json({
-        message: "IMAGE IS NOT GIVEN",
-      });
+      return res.json(
+        new ApiErrors({
+          statusText: "FILE NOT UPLOADED!",
+          statusCode: 400,
+        })
+      );
     }
   }
 );

@@ -15,7 +15,7 @@ export const getAllVendors = asyncHandler(
       if (!allRestaurants) {
         return res.json(
           new ApiErrors({
-            statusText: "USERS NOT EXISTS!",
+            statusText: "Vendor NOT EXISTS!",
             statusCode: 400,
           })
         );
@@ -31,7 +31,7 @@ export const getAllVendors = asyncHandler(
       return res.json(
         new ApiErrors({
           statusCode: 401,
-          statusText: "SOMETHING WRONG IN FETCH ALL VENDER!",
+          statusText: `ALL RESTAURANT ERROR, ${error}`,
         })
       );
     }

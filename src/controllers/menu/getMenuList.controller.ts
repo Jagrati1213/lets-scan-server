@@ -9,7 +9,7 @@ import { ApiResponse } from "../../utils/apiResponse";
 export const getMenuListController = asyncHandler(
   async (req: CustomRequestT, res: Response) => {
     try {
-      // GET EXIST USER DETAILS
+      // GET EXIST VENDOR DETAILS
       const currentVender = await vendorCollection
         .findById(req?.vendor?._id)
         .populate({
@@ -19,7 +19,7 @@ export const getMenuListController = asyncHandler(
 
       if (!currentVender) {
         return res.json(
-          new ApiErrors({ statusCode: 404, statusText: "USER NOT FOUNDED!" })
+          new ApiErrors({ statusCode: 404, statusText: "VENDOR NOT FOUNDED!" })
         );
       }
       return res.json(
@@ -33,7 +33,7 @@ export const getMenuListController = asyncHandler(
       return res.json(
         new ApiErrors({
           statusCode: 400,
-          statusText: "CANNOT FETCH MENULIST",
+          statusText: `ALL MENUS ERROR, ${err}`,
         })
       );
     }

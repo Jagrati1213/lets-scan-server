@@ -17,7 +17,7 @@ export const refreshTokenController = asyncHandler(
         return res.json(
           new ApiErrors({
             statusCode: 401,
-            statusText: "UNAUTHORIZED USER",
+            statusText: "UNAUTHORIZED VENDOR",
           })
         );
 
@@ -29,13 +29,13 @@ export const refreshTokenController = asyncHandler(
         process.env.REFRESH_TOKEN_KEY
       ) as JwtPayload;
 
-      // GET EXITS USER DETAILS
+      // GET EXITS VENDOR DETAILS
       const currentVender = await vendorCollection.findById(decodedToken._id);
       if (!currentVender)
         return res.json(
           new ApiErrors({
             statusCode: 400,
-            statusText: "USER NOT FOUND!",
+            statusText: "VENDOR NOT FOUND!",
           })
         );
 
@@ -72,7 +72,7 @@ export const refreshTokenController = asyncHandler(
       return res.json(
         new ApiErrors({
           statusCode: 400,
-          statusText: "ERROR IN REFRESH TOKEN!",
+          statusText: `ERROR IN REFRESH TOKEN!, ${error}`,
         })
       );
     }

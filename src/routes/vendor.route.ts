@@ -4,8 +4,8 @@ import { registerController } from "../controllers/auth/register.controller";
 import { loginController } from "../controllers/auth/login.controller";
 import { logOutController } from "../controllers/auth/logout.controller";
 import { refreshTokenController } from "../controllers/token/refreshToken.controller";
-import { getUserDetailsController } from "../controllers/user/getUserDetails.controller";
-import { updateIsOpenController } from "../controllers/user/updateIsOpen.controller";
+import { getVendorDetailsController } from "../controllers/vendor/getVendorDetails.controller";
+import { updateIsOpenController } from "../controllers/vendor/updateIsOpen.controller";
 
 export const vendorRouter = express.Router();
 
@@ -14,5 +14,5 @@ vendorRouter.post("/register", registerController);
 vendorRouter.post("/login", loginController);
 vendorRouter.get("/logout", vendorVerify, logOutController);
 vendorRouter.get("/refresh-token", refreshTokenController);
-vendorRouter.get("/", vendorVerify, getUserDetailsController);
+vendorRouter.get("/", vendorVerify, getVendorDetailsController);
 vendorRouter.put("/open-shop", vendorVerify, updateIsOpenController);

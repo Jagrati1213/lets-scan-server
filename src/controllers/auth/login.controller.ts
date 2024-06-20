@@ -8,7 +8,7 @@ import { ApiResponse } from "../../utils/apiResponse";
 export const loginController = asyncHandler(
   async (req: Request, res: Response) => {
     try {
-      // GET USER'S DETAILS
+      // GET VENDOR'S DETAILS
       const { username, password } = req.body;
 
       // CHECK VALIDATION FOR FIELDS
@@ -20,11 +20,12 @@ export const loginController = asyncHandler(
           })
         );
       }
+
       // CHECK CURRENT VENDER
       const currentVender = await vendorCollection.findOne({ username });
       if (!currentVender)
         return res.json(
-          new ApiErrors({ statusCode: 400, statusText: "USER NOT EXITS" })
+          new ApiErrors({ statusCode: 400, statusText: "VENDOR NOT EXITS" })
         );
 
       // PASSWORD CHECK
@@ -68,7 +69,7 @@ export const loginController = asyncHandler(
       return res.json(
         new ApiErrors({
           statusCode: 400,
-          statusText: "LOGIN IS NOT COMPLETED, TRY AGAIN!",
+          statusText: `LOGIN IS NOT COMPLETED, ${error}`,
         })
       );
     }

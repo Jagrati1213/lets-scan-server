@@ -13,20 +13,20 @@ export const deleteMenuItemController = asyncHandler(
       // GET MENU ID
       const { menuId } = req.params;
 
-      // GET USER ID FROM REQ OBJECT
+      // GET VENDOR ID FROM REQ OBJECT
       const currentVender = await vendorCollection.findById(req.vendor?._id);
 
-      // CHECK USER PRESENTS
+      // CHECK VENDOR PRESENTS
       if (!currentVender) {
         return res.json(
           new ApiErrors({
             statusCode: 400,
-            statusText: "UNAUTHORIZED USER!",
+            statusText: "UNAUTHORIZED VENDOR!",
           })
         );
       }
 
-      // DELETE FROM USER COLLECTION
+      // DELETE FROM VENDOR COLLECTION
       await vendorCollection.findByIdAndUpdate(
         { _id: currentVender?._id },
         {
@@ -63,7 +63,7 @@ export const deleteMenuItemController = asyncHandler(
       return res.json(
         new ApiErrors({
           statusCode: 400,
-          statusText: "ERROR IN MENU DELETE OPERATION",
+          statusText: `ERROR IN MENU DELETE, ${error}`,
         })
       );
     }

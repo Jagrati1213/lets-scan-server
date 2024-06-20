@@ -22,7 +22,7 @@ export const changeFoodActive = asyncHandler(
           })
         );
       }
-      // GET USER ID FROM REQ OBJECT
+      // GET VENDOR ID FROM REQ OBJECT
       const currentVender = await vendorCollection.findById(req.vendor?._id);
 
       // UPDATE MENU ITEM IN DB
@@ -50,7 +50,7 @@ export const changeFoodActive = asyncHandler(
         );
       }
 
-      // PUSH THE ITEMS TO USER DB
+      // PUSH THE ITEMS TO VENDOR DB
       await vendorCollection.findByIdAndUpdate(
         { _id: currentVender?._id },
         {

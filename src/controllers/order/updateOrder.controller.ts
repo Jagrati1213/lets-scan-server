@@ -16,12 +16,12 @@ export const updateOrderController = asyncHandler(
       const { name, email, orderList, paymentId, vendorId, tableNumber, note } =
         req.body;
 
-      // VERIFY USER ID
+      // VERIFY VENDOR ID
       if (!mongoose.Types.ObjectId.isValid(vendorId)) {
         return res.json(
           new ApiErrors({
             statusCode: 404,
-            statusText: "INVALID USER ID",
+            statusText: "INVALID VENDOR ID",
           })
         );
       }
@@ -46,14 +46,14 @@ export const updateOrderController = asyncHandler(
         );
       }
 
-      // FIND CURRENT USER
+      // FIND CURRENT VENDOR
       const currentVender = await vendorCollection.findById(vendorId);
 
       if (!currentVender) {
         return res.json(
           new ApiErrors({
             statusCode: 404,
-            statusText: "USER NOT FOUNDED!",
+            statusText: "VENDOR NOT FOUNDED!",
           })
         );
       }
@@ -69,16 +69,15 @@ export const updateOrderController = asyncHandler(
 
       // PUSH THE ORDER DETAILS, TOKEN, & VERIFY CODE TO ORDER COLLECTION
       const newOrder = await OrderCollection.create({
-        name: name,
-        email: email,
+        customer: { name, email },
+        tableNumber: tableNumber,
+        note: note,
         orderToken: token,
         verifyCode: bcryptVerifyCode,
         orderStatus: "Placed",
-        vendorId: currentVender._id,
         orderList: orderList,
-        tableNumber: tableNumber,
-        note: note,
         paymentId: paymentId,
+        vendorId: currentVender._id,
       });
 
       // VERIFY ORDER
@@ -95,17 +94,11 @@ export const updateOrderController = asyncHandler(
         );
       }
 
-      // PUSH ORDER TO USER COLLECTION
+      // PUSH ORDER TO VENDOR COLLECTION
       await vendorCollection.findByIdAndUpdate(
         { _id: vendorId },
-        {
-          $push: {
-            orders: createOrder?._id,
-          },
-        },
-        {
-          new: true,
-        }
+        { $push: { orders: createOrder?._id } },
+        { new: true }
       );
 
       // PUSH ORDER-ID TO PAYMENT COLLECTION
@@ -127,7 +120,7 @@ export const updateOrderController = asyncHandler(
       return res.json(
         new ApiErrors({
           statusCode: 400,
-          statusText: `ERROR IN INTERNAL!, ${error}`,
+          statusText: `ERROR IN ORDER!, ${error}`,
         })
       );
     }

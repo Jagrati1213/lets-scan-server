@@ -13,7 +13,7 @@ export const createMenuItemController = asyncHandler(
       // GET BODY OF MENU ITEM
       const { name, price, desc, image, type } = req.body;
 
-      // GET USER ID FROM REQ OBJECT
+      // GET VENDOR ID FROM REQ OBJECT
       const currentVender = await vendorCollection.findById(req.vendor?._id);
 
       // CHECK VALIDATION FOR FIELDS
@@ -51,7 +51,7 @@ export const createMenuItemController = asyncHandler(
         );
       }
 
-      // PUSH THE ITEMS TO USER DB
+      // PUSH THE ITEMS TO VENDOR DB
       await vendorCollection.findByIdAndUpdate(
         { _id: currentVender?._id },
         {
