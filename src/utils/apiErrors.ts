@@ -6,7 +6,7 @@ interface ApiErrorOptions {
 class ApiErrors {
   public statusCode: number;
   public statusText: string;
-  public data: any;
+  public data: unknown;
   public success: boolean;
 
   constructor({

@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import {  Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler";
 import { CustomRequestT } from "../../types";
 import { vendorCollection } from "../../models/vendor.model";

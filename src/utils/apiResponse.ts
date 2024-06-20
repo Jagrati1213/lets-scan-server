@@ -1,13 +1,13 @@
 interface apiResponseTypes {
   statusCode: number;
   statusText: string;
-  data: any;
+  data: unknown;
 }
 
 class ApiResponse {
   public statusCode: number;
   public statusText: string;
-  public data: any;
+  public data: unknown;
   public success: boolean;
   constructor({ statusCode, statusText, data }: apiResponseTypes) {
     this.statusCode = statusCode;
