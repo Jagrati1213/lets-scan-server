@@ -9,8 +9,11 @@
     "skipLibCheck": true,
     "noImplicitAny": false,
     "forceConsistentCasingInFileNames": true,
-    "typeRoots": ["./node_modules/@types"]
+    "typeRoots": ["./node_modules/@types"],
+    "skipDefaultLibCheck": false
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+ 
+  
 }
