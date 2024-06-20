@@ -7,7 +7,6 @@ import { vendorRouter } from "./routes/vendor.route";
 import { menuRouter } from "./routes/menu.route";
 import { letScanRouter } from "./routes/letScan.route";
 import { orderRouter } from "./routes/order.route";
-import { paymentRouter } from "./routes/payement.route";
 
 dotenv.config();
 
@@ -36,7 +35,6 @@ app.use("/api/v1/vendor", vendorRouter);
 app.use("/api/v1/menu", menuRouter);
 app.use("/api/v1/lets-scan", letScanRouter);
 app.use("/api/v1/order", orderRouter);
-app.use("api/v1/payment", paymentRouter);
 
 // DB connections
 ConnectionWithMongoDb()
