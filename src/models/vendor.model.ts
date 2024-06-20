@@ -1,9 +1,9 @@
-import mongoose, { Schema, Types } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { vendorT } from "../types";
 
-// CREATE USER SCHEMA
+// CREATE VENDOR SCHEMA
 const vendorSchema = new Schema<vendorT>(
   {
     username: {
@@ -96,5 +96,5 @@ vendorSchema.methods.generateRefreshToken = function () {
   );
 };
 
-// CREATE USER COLLECTION IN DB
+// CREATE VENDOR COLLECTION IN DB
 export const vendorCollection = mongoose.model<vendorT>("Vendor", vendorSchema);
