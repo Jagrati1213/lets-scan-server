@@ -18,19 +18,22 @@ const orderItemSchema = new Schema(
   },
   { timestamps: true }
 );
+const customerSchema = new Schema({
+  name: {
+    type: String,
+    require: true,
+    trim: true,
+    lowercase: true,
+  },
+  email: {
+    type: String,
+    require: true,
+  },
+});
 
 const orderSchema = new Schema(
   {
-    name: {
-      type: String,
-      require: true,
-      trim: true,
-      lowercase: true,
-    },
-    email: {
-      type: String,
-      require: true,
-    },
+    customer: customerSchema,
     orderList: [orderItemSchema],
     orderToken: {
       type: String,
