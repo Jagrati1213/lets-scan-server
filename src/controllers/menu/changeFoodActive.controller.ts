@@ -11,20 +11,6 @@ export const changeFoodActive = asyncHandler(
     try {
       const { activeVal, menuId } = req.body;
 
-      // CHECK MENU ITEM
-      const oldMenuItem = await menuCollection.findById(menuId);
-
-      if (!oldMenuItem) {
-        return res.json(
-          new ApiErrors({
-            statusCode: 404,
-            statusText: "ITEM NOT FOUNDED",
-          })
-        );
-      }
-      // GET VENDOR ID FROM REQ OBJECT
-      const currentVender = await vendorCollection.findById(req.vendor?._id);
-
       // UPDATE MENU ITEM IN DB
       const updatedMenuItem = await menuCollection
         .findByIdAndUpdate(
@@ -52,7 +38,7 @@ export const changeFoodActive = asyncHandler(
 
       // PUSH THE ITEMS TO VENDOR DB
       await vendorCollection.findByIdAndUpdate(
-        { _id: currentVender?._id },
+        { _id: req.vendor?._id },
         {
           $addToSet: {
             menuItems: updatedMenuItem?._id, //AVOID REPLICATION

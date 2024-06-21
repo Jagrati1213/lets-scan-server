@@ -13,22 +13,9 @@ export const deleteMenuItemController = asyncHandler(
       // GET MENU ID
       const { menuId } = req.params;
 
-      // GET VENDOR ID FROM REQ OBJECT
-      const currentVender = await vendorCollection.findById(req.vendor?._id);
-
-      // CHECK VENDOR PRESENTS
-      if (!currentVender) {
-        return res.json(
-          new ApiErrors({
-            statusCode: 400,
-            statusText: "UNAUTHORIZED VENDOR!",
-          })
-        );
-      }
-
       // DELETE FROM VENDOR COLLECTION
       await vendorCollection.findByIdAndUpdate(
-        { _id: currentVender?._id },
+        { _id: req.vendor?._id },
         {
           $pull: { menuItems: menuId },
         },

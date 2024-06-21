@@ -23,20 +23,6 @@ export const updateMenuItemController = asyncHandler(
         );
       }
 
-      // CHECK MENU ID EXITS OR NOT
-      const oldMenuItem = await menuCollection.findById(menuId);
-      if (!oldMenuItem) {
-        return res.json(
-          new ApiErrors({
-            statusCode: 400,
-            statusText: "MENU ITEM NOT EXITS!",
-          })
-        );
-      }
-
-      // GET VENDOR ID FROM REQ OBJECT
-      const currentVender = await vendorCollection.findById(req.vendor?._id);
-
       // TODO: FIX REPLICATION IN CLOUD
 
       // UPDATE MENU ITEM IN DB
@@ -70,7 +56,7 @@ export const updateMenuItemController = asyncHandler(
 
       // PUSH THE ITEMS TO VENDOR DB
       await vendorCollection.findByIdAndUpdate(
-        { _id: currentVender?._id },
+        { _id: req.vendor?._id },
         {
           $addToSet: {
             menuItems: updatedMenuItem?._id, //AVOID REPLICATION

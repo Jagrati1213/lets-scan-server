@@ -13,9 +13,6 @@ export const createMenuItemController = asyncHandler(
       // GET BODY OF MENU ITEM
       const { name, price, desc, image, type } = req.body;
 
-      // GET VENDOR ID FROM REQ OBJECT
-      const currentVender = await vendorCollection.findById(req.vendor?._id);
-
       // CHECK VALIDATION FOR FIELDS
       if (!name || !price || !desc || !image) {
         return res.json(
@@ -33,7 +30,7 @@ export const createMenuItemController = asyncHandler(
         image: image,
         price: Number(price),
         rating: 2.5,
-        vendorId: currentVender?._id,
+        vendorId: req.vendor?._id,
         isVeg: type,
       });
 
@@ -53,7 +50,7 @@ export const createMenuItemController = asyncHandler(
 
       // PUSH THE ITEMS TO VENDOR DB
       await vendorCollection.findByIdAndUpdate(
-        { _id: currentVender?._id },
+        { _id: req.vendor?._id },
         {
           $push: {
             menuItems: createdMenuItem?._id,

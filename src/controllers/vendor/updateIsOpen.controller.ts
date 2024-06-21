@@ -1,4 +1,4 @@
-import {  Response } from "express";
+import { Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler";
 import { CustomRequestT } from "../../types";
 import { vendorCollection } from "../../models/vendor.model";
@@ -11,19 +11,10 @@ export const updateIsOpenController = asyncHandler(
       // GET VALUE OF IS-OPEN
       const { isOpen } = req.body;
 
-      // GET CURRENT VENDOR
-      const currentVender = await vendorCollection.findById(req?.vendor?._id);
-
-      if (!currentVender) {
-        return res.json(
-          new ApiErrors({ statusCode: 404, statusText: "VENDOR NOT FOUNDED!" })
-        );
-      }
-
       //   UPDATE VENDOR SHOP
       const updatedUser = await vendorCollection
         .findByIdAndUpdate(
-          currentVender._id,
+          req?.vendor?._id,
           {
             $set: {
               isOpen: isOpen,
