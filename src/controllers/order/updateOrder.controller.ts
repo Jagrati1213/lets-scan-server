@@ -46,26 +46,11 @@ export const updateOrderController = asyncHandler(
         );
       }
 
-      // FIND CURRENT VENDOR
-      const currentVender = await vendorCollection.findById(vendorId);
-
-      if (!currentVender) {
-        return res.json(
-          new ApiErrors({
-            statusCode: 404,
-            statusText: "VENDOR NOT FOUNDED!",
-          })
-        );
-      }
-
       // GENERATE TOKEN(6) & VERIFY CODE(4)
       const { token, verifyCode } = generateOrderTokenAndCode({
         tokenLength: 6,
         codeLength: 4,
       });
-
-      // BCRYPT VERIFY CODE
-      const bcryptVerifyCode = await bcrypt.hash(verifyCode, 4);
 
       // PUSH THE ORDER DETAILS, TOKEN, & VERIFY CODE TO ORDER COLLECTION
       const newOrder = await OrderCollection.create({
@@ -73,16 +58,16 @@ export const updateOrderController = asyncHandler(
         tableNumber: tableNumber,
         note: note,
         orderToken: token,
-        verifyCode: bcryptVerifyCode,
+        verifyCode: verifyCode,
         orderStatus: "Placed",
         orderList: orderList,
         paymentId: paymentId,
-        vendorId: currentVender._id,
+        vendorId: vendorId,
       });
 
       // VERIFY ORDER
       const createOrder = await OrderCollection.findById(newOrder?._id).select(
-        "-paymentId -vendorId -createdAt -updatedAt -__v"
+        "-vendorId -createdAt -updatedAt -__v"
       );
 
       if (!createOrder) {
@@ -108,7 +93,7 @@ export const updateOrderController = asyncHandler(
         { new: true }
       );
 
-      // RETURN TOKEN & VERIFY CODE
+      // RETURN CREATED ORDER
       return res.json(
         new ApiResponse({
           statusCode: 201,
