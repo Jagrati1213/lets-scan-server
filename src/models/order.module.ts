@@ -4,7 +4,8 @@ import mongoose, { Schema } from "mongoose";
 const orderItemSchema = new Schema(
   {
     menuId: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "MenuList",
       required: true,
     },
     quantity: {
@@ -14,10 +15,6 @@ const orderItemSchema = new Schema(
     price: {
       type: Number,
       required: true,
-    },
-    name: {
-      type: String,
-      require: true,
     },
   },
   { timestamps: true }
@@ -44,7 +41,7 @@ const orderSchema = new Schema(
       unique: true,
     },
     verifyCode: {
-      type: String,
+      type: Number,
       unique: true,
     },
     paymentId: {
@@ -53,7 +50,7 @@ const orderSchema = new Schema(
     },
     orderStatus: {
       type: String,
-      enum: ["Placed", "Success"],
+      enum: ["Pending", "Complete"],
     },
     tableNumber: {
       type: Number,
