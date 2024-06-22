@@ -21,7 +21,8 @@ export const getAllOrdersController = asyncHandler(
       })
         .skip(skip)
         .limit(limit)
-        .select("-createdAt -updatedAt -__v -vendorId -verifyCode");
+        .select("-createdAt -updatedAt -__v -vendorId -verifyCode")
+        .populate("orderList.menuId", "name");
 
       const totalOrder = await OrderCollection.countDocuments({
         vendorId: req.vendor?._id,
