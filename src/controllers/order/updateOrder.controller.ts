@@ -6,7 +6,6 @@ import { vendorCollection } from "../../models/vendor.model";
 import { generateOrderTokenAndCode } from "../token/generateOrderToken.controller";
 import { OrderCollection } from "../../models/order.module";
 import { ApiResponse } from "../../utils/apiResponse";
-import bcrypt from "bcrypt";
 import { paymentCollection } from "../../models/payment.model";
 
 export const updateOrderController = asyncHandler(
@@ -59,7 +58,7 @@ export const updateOrderController = asyncHandler(
         note: note,
         orderToken: token,
         verifyCode: verifyCode,
-        orderStatus: "Placed",
+        orderStatus: "Pending",
         orderList: orderList,
         paymentId: paymentId,
         vendorId: vendorId,
