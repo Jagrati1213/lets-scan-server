@@ -35,11 +35,10 @@ export const getAllTransitionsController = asyncHandler(
               {
                 $project: {
                   _id: 1,
-                  razorpay_order_id: 1,
                   razorpay_payment_id: 1,
-                  razorpay_signature: 1,
                   orderId: 1,
-                  "orderDetails.vendorId": 1,
+                  totalAmount: "$orderDetails.totalAmount",
+                  payTime: "$orderDetails.createdAt",
                 },
               },
             ],
