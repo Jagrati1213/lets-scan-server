@@ -16,7 +16,8 @@ export const updateOrderController = asyncHandler(
         req.body;
 
       // VERIFY VENDOR ID
-      if (!mongoose.Types.ObjectId.isValid(vendorId)) {
+      const currentVendor = await vendorCollection.findById(vendorId);
+      if (!mongoose.Types.ObjectId.isValid(vendorId) || !currentVendor) {
         return res.json(
           new ApiErrors({
             statusCode: 404,

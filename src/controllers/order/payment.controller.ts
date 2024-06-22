@@ -4,13 +4,31 @@ import { ApiErrors } from "../../utils/apiErrors";
 import crypto from "crypto";
 import { paymentCollection } from "../../models/payment.model";
 import { ApiResponse } from "../../utils/apiResponse";
+import mongoose from "mongoose";
+import { vendorCollection } from "../../models/vendor.model";
 
 export const paymentVerifyController = asyncHandler(
   async (req: Request, res: Response) => {
     try {
       // GET RAZOR PAYMENT DETAILS
-      const { razorpay_payment_id, razorpay_order_id, razorpay_signature } =
-        req.body;
+      const {
+        razorpay_payment_id,
+        razorpay_order_id,
+        razorpay_signature,
+        vendorId,
+      } = req.body;
+
+      const currentVendor = await vendorCollection.findById(vendorId);
+
+      // RETURN IF VENDOR ID NOT EXIST
+      if (!mongoose.Types.ObjectId.isValid(vendorId) || !currentVendor) {
+        return res.json(
+          new ApiErrors({
+            statusCode: 404,
+            statusText: "INVALID VENDOR ID",
+          })
+        );
+      }
 
       // CHECK ENV VALUES
       if (!process.env.RAZOR_API_KEY_ID || !process.env.RAZOR_API_KEY_SECRET)

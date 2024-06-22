@@ -3,12 +3,26 @@ import { asyncHandler } from "../../utils/asyncHandler";
 import { ApiErrors } from "../../utils/apiErrors";
 import { Request, Response } from "express";
 import { ApiResponse } from "../../utils/apiResponse";
+import mongoose from "mongoose";
+import { vendorCollection } from "../../models/vendor.model";
 
 export const generateOrderIdController = asyncHandler(
   async (req: Request, res: Response) => {
     try {
       // GET TOTAL AMOUNT
-      const { amount } = req.body;
+      const { amount, vendorId } = req.body;
+
+      const currentVendor = await vendorCollection.findById(vendorId);
+
+      // RETURN IF VENDOR ID NOT EXIST
+      if (!mongoose.Types.ObjectId.isValid(vendorId) || !currentVendor) {
+        return res.json(
+          new ApiErrors({
+            statusCode: 404,
+            statusText: "INVALID VENDOR ID",
+          })
+        );
+      }
 
       if (!amount) {
         return res.json(
