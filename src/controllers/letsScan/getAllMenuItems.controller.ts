@@ -43,6 +43,7 @@ export const getAllMenuItemsController = asyncHandler(
           data: {
             menuItems: currentVendor.menuItems,
             isOpen: currentVendor.isOpen,
+            restaurant: currentVendor.restaurant,
           },
         })
       );
