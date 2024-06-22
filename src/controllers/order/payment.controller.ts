@@ -30,6 +30,13 @@ export const paymentVerifyController = asyncHandler(
         );
       }
 
+      //  CHECK VALUES
+      if (!razorpay_payment_id || !razorpay_order_id || !razorpay_signature) {
+        return res.json(
+          new ApiErrors({ statusCode: 400, statusText: "DATA IS MISSING!" })
+        );
+      }
+
       // CHECK ENV VALUES
       if (!process.env.RAZOR_API_KEY_ID || !process.env.RAZOR_API_KEY_SECRET)
         return;

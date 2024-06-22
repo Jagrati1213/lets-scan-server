@@ -58,6 +58,10 @@ const orderSchema = new Schema(
     note: {
       type: String,
     },
+    totalAmount: {
+      type: Number,
+      require: true,
+    },
     vendorId: {
       type: Schema.Types.ObjectId,
       required: true,

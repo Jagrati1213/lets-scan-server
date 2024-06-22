@@ -12,8 +12,16 @@ export const updateOrderController = asyncHandler(
   async (req: Request, res: Response) => {
     try {
       // GET ORDER DETAILS FROM REQUEST
-      const { name, email, orderList, paymentId, vendorId, tableNumber, note } =
-        req.body;
+      const {
+        name,
+        email,
+        orderList,
+        paymentId,
+        vendorId,
+        tableNumber,
+        note,
+        totalAmount,
+      } = req.body;
 
       // VERIFY VENDOR ID
       const currentVendor = await vendorCollection.findById(vendorId);
@@ -27,7 +35,7 @@ export const updateOrderController = asyncHandler(
       }
 
       // VERIFY THE FIELDS
-      if (!name || !email || !orderList || !orderList?.length) {
+      if (!name || !email || !orderList || !orderList?.length || !totalAmount) {
         return res.json(
           new ApiErrors({
             statusCode: 400,
@@ -63,6 +71,7 @@ export const updateOrderController = asyncHandler(
         orderList: orderList,
         paymentId: paymentId,
         vendorId: vendorId,
+        totalAmount: totalAmount | 0,
       });
 
       // VERIFY ORDER
