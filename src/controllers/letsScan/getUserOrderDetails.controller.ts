@@ -17,15 +17,13 @@ export const getUserOrderDetailsController = asyncHandler(
         return res.json(
           new ApiErrors({
             statusCode: 400,
-            statusText: "INVALID VENDER ID",
+            statusText: "INVALID ORDER ID",
           })
         );
       }
 
       // CHECK ORDER & GET VENDOR NAME
-      const order = await OrderCollection.findById(orderId).populate(
-        "vendorId"
-      );
+      const order = await OrderCollection.findById(orderId);
 
       if (!order) {
         return res.json(
