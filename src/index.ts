@@ -15,7 +15,10 @@ const port = process.env.PORT || 4000;
 
 // Middlewares
 // Handle cors origin
-const allowedOrigins = [process.env.DASHBOARD_URL, process.env.WEBSITE_URL];
+const allowedOrigins: string[] = [
+  process.env.DASHBOARD_URL as string,
+  process.env.WEBSITE_URL as string,
+];
 
 const corsOptions: CorsOptions = {
   origin: (origin, callback) => {

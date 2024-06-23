@@ -21,8 +21,16 @@ export const logOutController = asyncHandler(
       );
       return res
         .status(200)
-        .clearCookie("accessToken", { httpOnly: true, secure: true })
-        .clearCookie("refreshToken", { httpOnly: true, secure: true })
+        .clearCookie("accessToken", {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "none",
+        })
+        .clearCookie("refreshToken", {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "none",
+        })
         .json(
           new ApiResponse({
             statusCode: 200,

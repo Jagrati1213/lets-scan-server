@@ -55,11 +55,13 @@ export const refreshTokenController = asyncHandler(
         .status(200)
         .cookie("accessToken", tokens.accessToken, {
           httpOnly: true,
-          secure: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "none",
         })
         .cookie("refreshToken", tokens.refreshToken, {
           httpOnly: true,
-          secure: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "none",
         })
         .json(
           new ApiResponse({

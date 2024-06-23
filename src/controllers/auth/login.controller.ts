@@ -53,10 +53,12 @@ export const loginController = asyncHandler(
         .cookie("accessToken", tokens.accessToken, {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
+          sameSite: "none",
         })
         .cookie("refreshToken", tokens.refreshToken, {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
+          sameSite: "none",
         })
         .json(
           new ApiResponse({
