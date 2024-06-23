@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npm install && tsc",
+    "build": " tsc",
     "start": "node dist/index.js",
-    "lint": "eslint \"src/**/*.{js,ts}\"",
-    "dev": "nodemon -r dotenv/config src/index.ts"
+    "lint": "eslint \"src/*/.{js,ts}\"",
+    "dev": "nodemon dist/index.js",
+    "watch": "tsc -w"
   },
   "keywords": [
     "javascript",

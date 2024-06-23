@@ -42,7 +42,7 @@ export const getUserOrderDetailsController = asyncHandler(
       }
 
       // RESPOND WITH ORDER DETAILS INCLUDING VENDOR RESTAURANT
-      res.json(
+      return res.json(
         new ApiResponse({
           statusCode: 200,
           statusText: "ORDER DETAILS",

@@ -1,7 +1,6 @@
 import { Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler";
 import { CustomRequestT } from "../../types";
-import { vendorCollection } from "../../models/vendor.model";
 import { ApiErrors } from "../../utils/apiErrors";
 import { ApiResponse } from "../../utils/apiResponse";
 import { OrderCollection } from "../../models/order.module";
