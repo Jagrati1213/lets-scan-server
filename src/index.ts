@@ -1,7 +1,7 @@
 import express, { Application } from "express";
 import { ConnectionWithMongoDb } from "./db/connection";
 import dotenv from "dotenv";
-import cors from "cors";
+import cors, { CorsOptions } from "cors";
 import cookieParser from "cookie-parser";
 import { vendorRouter } from "./routes/vendor.route";
 import { menuRouter } from "./routes/menu.route";
@@ -15,7 +15,20 @@ const port = process.env.PORT || 4000;
 
 // Middlewares
 // Handle cors origin
-app.use(cors({ credentials: true, origin: "*" }));
+const allowedOrigins = [process.env.DASHBOARD_URL, process.env.WEBSITE_URL];
+
+const corsOptions: CorsOptions = {
+  origin: (origin, callback) => {
+    if (allowedOrigins.includes(origin as string) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 // app.use(cors());
 
 // Handle json as request
