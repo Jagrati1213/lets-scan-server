@@ -9,6 +9,10 @@ import { ApiResponse } from "../../utils/apiResponse";
 export const getAllTransitionsController = asyncHandler(
   async (req: CustomRequestT, res: Response) => {
     try {
+      // GET SKIP & LIMIT
+      const skip = parseInt(req.query.skip as string) || 0;
+      const limit = parseInt(req.query.limit as string) || 5;
+
       // GET ALL TRANSITIONS
       const result = await paymentCollection.aggregate([
         {
@@ -36,11 +40,16 @@ export const getAllTransitionsController = asyncHandler(
                 $project: {
                   _id: 1,
                   razorpay_payment_id: 1,
-                  orderId: 1,
                   totalAmount: "$orderDetails.totalAmount",
                   payTime: "$orderDetails.createdAt",
+                  customerDetails: {
+                    name: "$orderDetails.customer.name",
+                    orderId: "$orderDetails._id",
+                  },
                 },
               },
+              { $skip: skip },
+              { $limit: limit },
             ],
             totalCount: [
               {
