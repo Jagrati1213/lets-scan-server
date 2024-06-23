@@ -9,6 +9,7 @@ import { updateIsOpenController } from "../controllers/vendor/updateIsOpen.contr
 import { getAllOrdersController } from "../controllers/vendorOrder/getAllOrders.controller";
 import { updateOrderSuccessController } from "../controllers/vendorOrder/updateOrderSuccess.controller";
 import { getAllTransitionsController } from "../controllers/transitions/getAllTransitions.controller";
+import { checkOrdersStatus } from "../middlewares/checkOrdersStatus.middleware";
 
 export const vendorRouter = express.Router();
 
@@ -18,7 +19,12 @@ vendorRouter.post("/login", loginController);
 vendorRouter.get("/logout", vendorVerify, logOutController);
 vendorRouter.get("/refresh-token", refreshTokenController);
 vendorRouter.get("/", vendorVerify, getVendorDetailsController);
-vendorRouter.put("/open-shop", vendorVerify, updateIsOpenController);
+vendorRouter.put(
+  "/open-shop",
+  vendorVerify,
+  checkOrdersStatus,
+  updateIsOpenController
+);
 vendorRouter.get("/order", vendorVerify, getAllOrdersController);
 vendorRouter.put("/order/verify", vendorVerify, updateOrderSuccessController);
 vendorRouter.get("/transitions", vendorVerify, getAllTransitionsController);
