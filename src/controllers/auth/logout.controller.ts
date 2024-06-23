@@ -24,12 +24,10 @@ export const logOutController = asyncHandler(
         .clearCookie("accessToken", {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
-          sameSite: "none",
         })
         .clearCookie("refreshToken", {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
-          sameSite: "none",
         })
         .json(
           new ApiResponse({
