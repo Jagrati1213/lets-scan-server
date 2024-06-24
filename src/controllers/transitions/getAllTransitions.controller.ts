@@ -65,7 +65,7 @@ export const getAllTransitionsController = asyncHandler(
         ? result[0].totalCount[0].count
         : 0;
 
-      return res.json(
+      return res.status(200).json(
         new ApiResponse({
           statusCode: 200,
           statusText: "ALL TRANSITIONS",
@@ -76,7 +76,7 @@ export const getAllTransitionsController = asyncHandler(
         })
       );
     } catch (error: any) {
-      return res.json(
+      return res.status(400).json(
         new ApiErrors({
           statusCode: 400,
           statusText: `TRANSITIONS ERROR, ${error?.message}`,
