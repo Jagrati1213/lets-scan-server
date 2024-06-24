@@ -15,7 +15,7 @@ export const updateMenuItemController = asyncHandler(
 
       // CHECK FIELDS
       if (!name || !price || !desc) {
-        return res.json(
+        return res.status(400).json(
           new ApiErrors({
             statusCode: 400,
             statusText: `ALL FIELDS REQUIRED!`,
@@ -46,10 +46,10 @@ export const updateMenuItemController = asyncHandler(
 
       // CHECK MENU ITEM IS CREATED OR NOT
       if (!updatedMenuItem) {
-        return res.json(
+        return res.status(409).json(
           new ApiErrors({
             statusCode: 409,
-            statusText: "MENU ITEM NOT UPDATED YET, TRY AGAIN!",
+            statusText: "MENU ITEM NOT UPDATED!",
           })
         );
       }
@@ -68,7 +68,7 @@ export const updateMenuItemController = asyncHandler(
       );
 
       // SEND RESPONSE OF MENUITEM
-      return res.json(
+      return res.status(201).json(
         new ApiResponse({
           statusCode: 201,
           statusText: "MENU ITEM UPDATED SUCCESSFULLY!",
@@ -76,7 +76,7 @@ export const updateMenuItemController = asyncHandler(
         })
       );
     } catch (err) {
-      return res.json(
+      return res.status(400).json(
         new ApiErrors({
           statusCode: 400,
           statusText: `ERROR IN UPDATE MENU ITEM, ${err}`,

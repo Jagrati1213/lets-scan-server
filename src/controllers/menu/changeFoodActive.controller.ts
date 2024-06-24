@@ -28,10 +28,10 @@ export const changeFoodActive = asyncHandler(
 
       // CHECK MENU ITEM IS CREATED OR NOT
       if (!updatedMenuItem) {
-        return res.json(
+        return res.status(409).json(
           new ApiErrors({
             statusCode: 409,
-            statusText: "MENU ITEM NOT UPDATED YET, TRY AGAIN!",
+            statusText: "MENU ITEM NOT UPDATED!",
           })
         );
       }
@@ -50,7 +50,7 @@ export const changeFoodActive = asyncHandler(
       );
 
       // SEND RESPONSE OF MENUITEM
-      return res.json(
+      return res.status(201).json(
         new ApiResponse({
           statusCode: 201,
           statusText: "MENU ITEM UPDATED SUCCESSFULLY!",
@@ -58,7 +58,7 @@ export const changeFoodActive = asyncHandler(
         })
       );
     } catch (error) {
-      return res.json(
+      return res.status(400).json(
         new ApiErrors({
           statusCode: 400,
           statusText: `ERROR IN UPDATE MENU ITEM, ${error}`,

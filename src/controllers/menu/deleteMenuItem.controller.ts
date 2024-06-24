@@ -30,7 +30,7 @@ export const deleteMenuItemController = asyncHandler(
       });
 
       if (!oldMenuItem) {
-        return res.json(
+        return res.status(400).json(
           new ApiErrors({
             statusCode: 400,
             statusText: "INVALID MENU ITEM!",
@@ -39,7 +39,7 @@ export const deleteMenuItemController = asyncHandler(
       }
 
       // SEND RESPONSE
-      return res.json(
+      return res.status(200).json(
         new ApiResponse({
           statusCode: 200,
           statusText: "ITEM DELETED SUCCESSFULLY!",
@@ -47,7 +47,7 @@ export const deleteMenuItemController = asyncHandler(
         })
       );
     } catch (error) {
-      return res.json(
+      return res.status(400).json(
         new ApiErrors({
           statusCode: 400,
           statusText: `ERROR IN MENU DELETE, ${error}`,

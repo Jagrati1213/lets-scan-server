@@ -18,11 +18,16 @@ export const getMenuListController = asyncHandler(
         });
 
       if (!currentVender) {
-        return res.json(
-          new ApiErrors({ statusCode: 404, statusText: "VENDOR NOT FOUNDED!" })
-        );
+        return res
+          .status(404)
+          .json(
+            new ApiErrors({
+              statusCode: 404,
+              statusText: "VENDOR NOT FOUNDED!",
+            })
+          );
       }
-      return res.json(
+      return res.status(200).json(
         new ApiResponse({
           statusCode: 200,
           statusText: "MENU ITEMS FETCHED SUCCESSFULLY!",
@@ -30,7 +35,7 @@ export const getMenuListController = asyncHandler(
         })
       );
     } catch (err) {
-      return res.json(
+      return res.status(400).json(
         new ApiErrors({
           statusCode: 400,
           statusText: `ALL MENUS ERROR, ${err}`,

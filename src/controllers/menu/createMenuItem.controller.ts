@@ -15,9 +15,9 @@ export const createMenuItemController = asyncHandler(
 
       // CHECK VALIDATION FOR FIELDS
       if (!name || !price || !desc || !image) {
-        return res.json(
+        return res.status(400).json(
           new ApiErrors({
-            statusCode: 401,
+            statusCode: 400,
             statusText: "ALL FIELDS ARE REQUIRED!",
           })
         );
@@ -40,10 +40,10 @@ export const createMenuItemController = asyncHandler(
         .select("-createdAt -updatedAt -__v");
 
       if (!createdMenuItem) {
-        return res.json(
+        return res.status(409).json(
           new ApiErrors({
             statusCode: 409,
-            statusText: "MENU ITEM CREATED FAILED!",
+            statusText: "MENU ITEM NOT CREATED!",
           })
         );
       }
@@ -59,7 +59,7 @@ export const createMenuItemController = asyncHandler(
       );
 
       // SEND RESPONSE OF MENUITEM
-      return res.json(
+      return res.status(201).json(
         new ApiResponse({
           statusCode: 201,
           statusText: "MENU ITEM CREATED SUCCESSFULLY!",
@@ -67,7 +67,7 @@ export const createMenuItemController = asyncHandler(
         })
       );
     } catch (err) {
-      return res.json(
+      return res.status(400).json(
         new ApiErrors({
           statusCode: 400,
           statusText: `ERROR IN CREATE MENU, ${err}`,
