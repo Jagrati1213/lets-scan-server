@@ -9,13 +9,11 @@ export const vendorVerify = asyncHandler(
   async (req: CustomRequestT, res: Response, next: NextFunction) => {
     try {
       // GET TOKEN
-      const token =
-        req.cookies?.accessToken ||
-        req.header("Authorization")?.replace("Bearer ", "");
+      const token = req.header("Authorization")?.replace("Bearer ", "");
 
       //   CHECK TOKEN EMPTINESS
       if (!token || !process.env.ACCESS_TOKEN_KEY)
-        return res.json(
+        return res.status(401).json(
           new ApiErrors({
             statusCode: 401,
             statusText: "UNAUTHORIZED TOKEN!",
@@ -35,7 +33,7 @@ export const vendorVerify = asyncHandler(
 
       // CHECK VENDOR'S EXISTENCE
       if (!verifyVender)
-        return res.json(
+        return res.status(401).json(
           new ApiErrors({
             statusCode: 401,
             statusText: "INVALID ACCESS TOKEN!",
@@ -45,9 +43,9 @@ export const vendorVerify = asyncHandler(
       req.vendor = verifyVender;
       next();
     } catch (error) {
-      return res.json(
+      return res.status(400).json(
         new ApiErrors({
-          statusCode: 401,
+          statusCode: 400,
           statusText: `ERROR IN TOKEN VERIFICATION! ${error}`,
         })
       );

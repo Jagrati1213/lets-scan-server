@@ -10,18 +10,20 @@ export const menuApisHandle = asyncHandler(
     const currentVender = await vendorCollection.findById(req.vendor?._id);
 
     if (!currentVender) {
-      return res.json(
-        new ApiErrors({ statusCode: 404, statusText: "VENDOR NOT FOUNDED!" })
-      );
+      return res
+        .status(404)
+        .json(
+          new ApiErrors({ statusCode: 404, statusText: "VENDOR NOT FOUNDED!" })
+        );
     }
 
     // CALLED NEXT WHEN SHOP IS CLOSED
     if (!currentVender.isOpen) {
       next();
     } else {
-      return res.json(
+      return res.status(400).json(
         new ApiErrors({
-          statusCode: 403,
+          statusCode: 400,
           statusText: "SHOP IS OPENED, CAN'T UPDATE THE MENU",
         })
       );

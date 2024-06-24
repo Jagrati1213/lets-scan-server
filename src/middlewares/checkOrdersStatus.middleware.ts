@@ -16,7 +16,7 @@ export const checkOrdersStatus = asyncHandler(
         });
 
       if (currentVendorPendingOrders) {
-        return res.json(
+        return res.status(400).json(
           new ApiErrors({
             statusCode: 400,
             statusText: "SHOP CAN'T CLOSED! ORDERS ARE PENDING!",
@@ -26,7 +26,7 @@ export const checkOrdersStatus = asyncHandler(
         next();
       }
     } catch (error) {
-      return res.json(
+      return res.status(400).json(
         new ApiErrors({
           statusCode: 400,
           statusText: "ERROR IN CHECK ORDER STATUS",
