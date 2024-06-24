@@ -24,9 +24,9 @@ export const getVendorDetailsController = asyncHandler(
         );
 
       if (!currentVendor)
-        return res.json(
+        return res.status(404).json(
           new ApiErrors({
-            statusCode: 400,
+            statusCode: 404,
             statusText: "VENDOR NOT FOUNDED!",
           })
         );
@@ -78,23 +78,25 @@ export const getVendorDetailsController = asyncHandler(
       } else {
         item = bestMenuItem.name;
       }
-      return res.json(
+      return res.status(200).json(
         new ApiResponse({
           statusCode: 200,
           statusText: "VENDOR EXITS",
           data: {
-            ...currentVendor.toObject(),
-            totalCustomers,
-            totalOrders,
-            totalRevenue,
-            bestSell: item,
+            vendor: {
+              ...currentVendor.toObject(),
+              totalCustomers,
+              totalOrders,
+              totalRevenue,
+              bestSell: item,
+            },
           },
         })
       );
     } catch (error) {
-      return res.json(
+      return res.status(400).json(
         new ApiErrors({
-          statusCode: 401,
+          statusCode: 400,
           statusText: `ERROR IN VENDOR DETAILS, ${error}`,
         })
       );

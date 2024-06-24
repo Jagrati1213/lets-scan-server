@@ -28,7 +28,7 @@ export const updateIsOpenController = asyncHandler(
           "-password -refreshToken -createdAt -updatedAt -__v -menuItems -orders"
         );
       if (!updatedUser) {
-        return res.json(
+        return res.status(400).json(
           new ApiErrors({
             statusCode: 400,
             statusText: "SOMETHING WRONG IN SHOP OPENING!",
@@ -37,7 +37,7 @@ export const updateIsOpenController = asyncHandler(
       }
 
       //  RETURN RESPONSE TO CLIENT
-      return res.json(
+      return res.status(200).json(
         new ApiResponse({
           statusCode: 200,
           statusText: `${updatedUser.isOpen ? "SHOP OPENED!" : "SHOP CLOSED!"}`,
@@ -45,9 +45,9 @@ export const updateIsOpenController = asyncHandler(
         })
       );
     } catch (error) {
-      return res.json(
+      return res.status(400).json(
         new ApiErrors({
-          statusCode: 500,
+          statusCode: 400,
           statusText: `ERROR IN SHOP OPEN, ${error}`,
         })
       );
