@@ -12,7 +12,7 @@ export const registerController = asyncHandler(
 
       // CHECK VALIDATION FOR FIELDS
       if (!username || !email || !password || !restaurant) {
-        return res.json(
+        return res.status(400).json(
           new ApiErrors({
             statusCode: 400,
             statusText: "ALL FIELDS REQUIRED!",
@@ -26,9 +26,9 @@ export const registerController = asyncHandler(
       });
 
       if (currentVender) {
-        return res.json(
+        return res.status(400).json(
           new ApiErrors({
-            statusCode: 403,
+            statusCode: 400,
             statusText: "VENDOR ALREADY EXITS!",
           })
         );
@@ -50,10 +50,10 @@ export const registerController = asyncHandler(
         );
 
       if (!vendorCreated)
-        return res.json(
+        return res.status(400).json(
           new ApiErrors({
             statusCode: 400,
-            statusText: "VENDOR NOT CREATED, PLEASE RE-CREATE ACCOUNT!",
+            statusText: "REGISTRATION FAILED!",
           })
         );
 
@@ -66,9 +66,9 @@ export const registerController = asyncHandler(
         })
       );
     } catch (error) {
-      return res.json(
+      return res.status(400).json(
         new ApiErrors({
-          statusCode: 401,
+          statusCode: 400,
           statusText: `REGISTER ERROR, ${error}`,
         })
       );

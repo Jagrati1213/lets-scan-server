@@ -13,10 +13,10 @@ export const loginController = asyncHandler(
 
       // CHECK VALIDATION FOR FIELDS
       if (!username || !password) {
-        return res.json(
+        return res.status(400).json(
           new ApiErrors({
-            statusCode: 401,
-            statusText: "ALL FIELDS ARE REQUIRED, TRY AGAIN!",
+            statusCode: 400,
+            statusText: "ALL FIELDS ARE REQUIRED!",
           })
         );
       }
@@ -24,14 +24,17 @@ export const loginController = asyncHandler(
       // CHECK CURRENT VENDER
       const currentVender = await vendorCollection.findOne({ username });
       if (!currentVender)
-        return res.json(
-          new ApiErrors({ statusCode: 400, statusText: "VENDOR NOT EXITS" })
+        return res.status(404).json(
+          new ApiErrors({
+            statusCode: 404,
+            statusText: "VENDOR NOT FOUNDED!",
+          })
         );
 
       // PASSWORD CHECK
       const passwordCorrect = await currentVender.isPasswordCorrect(password);
       if (!passwordCorrect)
-        return res.json(
+        return res.status(401).json(
           new ApiErrors({
             statusCode: 401,
             statusText: "INCORRECT PASSWORD!",
@@ -47,26 +50,26 @@ export const loginController = asyncHandler(
           "-password -refreshToken -createdAt -updatedAt -__v -menuItems -orders"
         );
 
-      // SEND IN COOKIES
-      return res
-        .status(200)
-        .cookie("accessToken", tokens.accessToken, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
+      // SEND DATA & TOKENS
+      return res.status(200).json(
+        new ApiResponse({
+          statusCode: 200,
+          statusText: "SUCCESSFULLY LOGIN",
+          data: {
+            vendor: {
+              ...loggedVender?.toObject(),
+              totalCustomers: 0,
+              totalOrders: 0,
+              totalRevenue: 0,
+              bestSell: "No best selling item",
+            },
+            token: tokens.accessToken,
+            refreshToken: tokens.refreshToken,
+          },
         })
-        .cookie("refreshToken", tokens.refreshToken, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-        })
-        .json(
-          new ApiResponse({
-            statusCode: 200,
-            statusText: "SUCCESSFULLY LOGIN",
-            data: loggedVender,
-          })
-        );
+      );
     } catch (error) {
-      return res.json(
+      return res.status(400).json(
         new ApiErrors({
           statusCode: 400,
           statusText: `LOGIN IS NOT COMPLETED, ${error}`,

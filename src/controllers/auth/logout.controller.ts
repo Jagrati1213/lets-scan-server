@@ -19,27 +19,17 @@ export const logOutController = asyncHandler(
           new: true,
         }
       );
-      return res
-        .status(200)
-        .clearCookie("accessToken", {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
+      return res.status(200).json(
+        new ApiResponse({
+          statusCode: 200,
+          statusText: "LOGOUT SUCCESSFULLY.",
+          data: null,
         })
-        .clearCookie("refreshToken", {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-        })
-        .json(
-          new ApiResponse({
-            statusCode: 200,
-            statusText: "LOGOUT SUCCESSFULLY.",
-            data: null,
-          })
-        );
+      );
     } catch (error) {
-      return res.json(
+      return res.status(400).json(
         new ApiErrors({
-          statusCode: 401,
+          statusCode: 400,
           statusText: `LOGOUT ERROR, ${error}`,
         })
       );
