@@ -10,11 +10,13 @@ export const refreshTokenController = asyncHandler(
   async (req: Request, res: Response) => {
     try {
       // GET TOKEN FROM FRONTEND
-      const inComingRefreshToken = req.cookies?.refreshToken;
+      const inComingRefreshToken = req
+        .header("Authorization")
+        ?.replace("Bearer ", "");
 
       // CHECK TOKEN
       if (!inComingRefreshToken)
-        return res.json(
+        return res.status(401).json(
           new ApiErrors({
             statusCode: 401,
             statusText: "UNAUTHORIZED VENDOR",
@@ -32,7 +34,7 @@ export const refreshTokenController = asyncHandler(
       // GET EXITS VENDOR DETAILS
       const currentVender = await vendorCollection.findById(decodedToken._id);
       if (!currentVender)
-        return res.json(
+        return res.status(400).json(
           new ApiErrors({
             statusCode: 400,
             statusText: "VENDOR NOT FOUND!",
@@ -41,35 +43,30 @@ export const refreshTokenController = asyncHandler(
 
       // CHECK TOKENS
       if (inComingRefreshToken !== currentVender?.refreshToken) {
-        return res.json(
-          new ApiErrors({ statusCode: 400, statusText: "INVALID TOKEN!" })
-        );
+        return res
+          .status(400)
+          .json(
+            new ApiErrors({ statusCode: 400, statusText: "INVALID TOKEN!" })
+          );
       }
 
       // CREATE NEW TOKEN
       const tokens = await generateAccessAndRefreshToken(currentVender._id);
       if (!tokens) return;
 
-      // AGAIN SET IN COOKIES
-      return res
-        .status(200)
-        .cookie("accessToken", tokens.accessToken, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
+      // SEND TOKENS
+      return res.status(200).json(
+        new ApiResponse({
+          statusCode: 200,
+          statusText: "TOKENS  GENERATED SUCCESSFULLY",
+          data: {
+            token: tokens.accessToken,
+            refreshToken: tokens.refreshToken,
+          },
         })
-        .cookie("refreshToken", tokens.refreshToken, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-        })
-        .json(
-          new ApiResponse({
-            statusCode: 200,
-            statusText: "TOKEN GENERATED SUCCESSFULLY",
-            data: null,
-          })
-        );
+      );
     } catch (error) {
-      return res.json(
+      return res.status(400).json(
         new ApiErrors({
           statusCode: 400,
           statusText: `ERROR IN REFRESH TOKEN!, ${error}`,
