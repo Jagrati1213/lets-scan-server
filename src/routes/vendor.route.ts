@@ -13,18 +13,34 @@ import { checkOrdersStatus } from "../middlewares/checkOrdersStatus.middleware";
 
 export const vendorRouter = express.Router();
 
-// CREATE ROUTER
+// REGISTER USER
 vendorRouter.post("/register", registerController);
+
+// LOGIN
 vendorRouter.post("/login", loginController);
+
+// LOGOUT
 vendorRouter.get("/logout", vendorVerify, logOutController);
+
+// REFRESH_TOKEN
 vendorRouter.get("/refresh-token", refreshTokenController);
+
+// GET VENDOR
 vendorRouter.get("/", vendorVerify, getVendorDetailsController);
+
+// OPEN _CLOSE SHOP
 vendorRouter.put(
   "/open-shop",
   vendorVerify,
   checkOrdersStatus,
   updateIsOpenController
 );
+
+// GET ORDERS
 vendorRouter.get("/order", vendorVerify, getAllOrdersController);
+
+// UPDATE ORDERS
 vendorRouter.put("/order/verify", vendorVerify, updateOrderSuccessController);
+
+// GET TRANSITIONS
 vendorRouter.get("/transitions", vendorVerify, getAllTransitionsController);

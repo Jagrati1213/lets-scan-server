@@ -5,7 +5,11 @@ import { updateOrderController } from "../controllers/order/updateOrder.controll
 
 export const orderRouter = express.Router();
 
-// CREATE ROUTER
+//CHECK OUT
 orderRouter.post("/checkout", generateOrderIdController);
+
+// PAYMENT VERIFY
 orderRouter.post("/payment-verify", paymentVerifyController);
+
+// UPDATE ORDER
 orderRouter.post("/", updateOrderController);

@@ -11,27 +11,37 @@ import { menuApisHandle } from "../middlewares/menuApis.middleware";
 
 export const menuRouter = express.Router();
 
-// MENU ROUTES
+// GET MENU
 menuRouter.get("/", vendorVerify, getMenuListController);
+
+// DELETE MENU
 menuRouter.delete(
   "/delete-menu/:menuId",
   vendorVerify,
   menuApisHandle,
   deleteMenuItemController
 );
+
+// CREATE MENU
 menuRouter.post(
   "/create-menu",
   vendorVerify,
   menuApisHandle,
   createMenuItemController
 );
+
+// UPDATE MENU
 menuRouter.put(
   "/update-menu",
   vendorVerify,
   menuApisHandle,
   updateMenuItemController
 );
+
+// ACTIVE MENU
 menuRouter.put("/active", vendorVerify, changeFoodActive);
+
+// UPLOAD IMAGE
 menuRouter.post(
   "/upload-image",
   vendorVerify,
