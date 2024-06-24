@@ -12,7 +12,7 @@ export const updateOrderSuccessController = asyncHandler(
 
       // CHECK IS EMPTY
       if (!incomingVerifyCode) {
-        return res.json(
+        return res.status(404).json(
           new ApiErrors({
             statusCode: 404,
             statusText: "VERIFY CODE IS REQUIRED!",
@@ -26,7 +26,7 @@ export const updateOrderSuccessController = asyncHandler(
       );
 
       if (oldOrder?.verifyCode !== incomingVerifyCode) {
-        return res.json(
+        return res.status(400).json(
           new ApiErrors({
             statusCode: 400,
             statusText: "VERIFY CODE IS INCORRECT!",
@@ -49,12 +49,14 @@ export const updateOrderSuccessController = asyncHandler(
       ).select("-createdAt -updatedAt -__v -vendorId");
 
       if (!completedOrder) {
-        return res.json(
-          new ApiErrors({ statusCode: 404, statusText: "ORDER NOT UPDATED!" })
-        );
+        return res
+          .status(400)
+          .json(
+            new ApiErrors({ statusCode: 400, statusText: "ORDER NOT UPDATED!" })
+          );
       }
 
-      return res.json(
+      return res.status(200).json(
         new ApiResponse({
           statusCode: 200,
           statusText: "ORDER COMPLETED SUCCESSFULLY!",
@@ -62,9 +64,9 @@ export const updateOrderSuccessController = asyncHandler(
         })
       );
     } catch (error: any) {
-      return res.json(
+      return res.status(400).json(
         new ApiErrors({
-          statusCode: 404,
+          statusCode: 400,
           statusText: `ERROR IN UPDATING ORDER STATUS!, ${error?.message}`,
         })
       );

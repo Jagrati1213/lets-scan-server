@@ -29,7 +29,7 @@ export const getAllOrdersController = asyncHandler(
       });
 
       // SEND TO CLIENT
-      return res.json(
+      return res.status(200).json(
         new ApiResponse({
           statusCode: 200,
           statusText: `ORDERS, ${type}`,
@@ -37,9 +37,9 @@ export const getAllOrdersController = asyncHandler(
         })
       );
     } catch (error) {
-      return res.json(
+      return res.status(400).json(
         new ApiErrors({
-          statusCode: 404,
+          statusCode: 400,
           statusText: `ERROR IN ORDERS, ${error}`,
         })
       );
