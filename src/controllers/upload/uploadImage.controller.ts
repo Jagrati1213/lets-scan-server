@@ -11,7 +11,7 @@ export const uploadImageController = asyncHandler(
       const uploadedUrl = await uploadOnCloudinary(localPath);
 
       if (!uploadedUrl) {
-        return res.json(
+        return res.status(400).json(
           new ApiErrors({
             statusText: "FILE NOT UPLOADED!",
             statusCode: 400,
@@ -19,7 +19,7 @@ export const uploadImageController = asyncHandler(
         );
       }
 
-      return res.json(
+      return res.status(200).json(
         new ApiResponse({
           statusCode: 200,
           statusText: "IMAGE UPLOADED SUCCESSFULLY!",
@@ -27,7 +27,7 @@ export const uploadImageController = asyncHandler(
         })
       );
     } else {
-      return res.json(
+      return res.status(400).json(
         new ApiErrors({
           statusText: "FILE NOT UPLOADED!",
           statusCode: 400,
