@@ -15,7 +15,7 @@ const port = process.env.PORT || 4000;
 
 // Middlewares
 // Handle cors origin
-app.use(cors({ credentials: true, origin: "*" }));
+app.use(cors());
 // app.use(cors());
 
 // Handle json as request
