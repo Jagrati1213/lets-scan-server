@@ -13,7 +13,7 @@ export const getOrderDetailsController = asyncHandler(
 
       // VERIFY ID
       if (!mongoose.Types.ObjectId.isValid(orderId)) {
-        return res.json(
+        return res.status(400).json(
           new ApiErrors({
             statusCode: 400,
             statusText: "INVALID ORDER ID",
@@ -22,29 +22,29 @@ export const getOrderDetailsController = asyncHandler(
       }
 
       // CHECK USER
-      const userOrderDeTails = await OrderCollection.findById(orderId).select(
+      const vendorOrderDetails = await OrderCollection.findById(orderId).select(
         "-vendorId -createdAt -updatedAt -__v"
       );
 
-      if (!userOrderDeTails) {
-        return res.json(
+      if (!vendorOrderDetails) {
+        return res.status(404).json(
           new ApiErrors({
             statusCode: 404,
-            statusText: "USER'S ORDER DETAILS NOT FOUNDED!",
+            statusText: "VENDOR'S ORDER DETAILS NOT FOUNDED!",
           })
         );
       }
-      return res.json(
+      return res.status(200).json(
         new ApiResponse({
           statusCode: 200,
           statusText: "ORDERS",
           data: {
-            orderDetails: userOrderDeTails,
+            orderDetails: vendorOrderDetails,
           },
         })
       );
     } catch (error) {
-      return res.json(
+      return res.status(400).json(
         new ApiErrors({
           statusCode: 400,
           statusText: `ERROR IN ORDER DETAILS, ${error}`,

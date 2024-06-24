@@ -13,7 +13,7 @@ export const getAllMenuItemsController = asyncHandler(
 
       // VERIFY VENDER ID
       if (!mongoose.Types.ObjectId.isValid(vendorId)) {
-        return res.json(
+        return res.status(400).json(
           new ApiErrors({
             statusCode: 400,
             statusText: "INVALID VENDER ID",
@@ -29,14 +29,14 @@ export const getAllMenuItemsController = asyncHandler(
       });
 
       if (!currentVendor) {
-        return res.json(
+        return res.status(404).json(
           new ApiErrors({
             statusCode: 404,
             statusText: "VENDER NOT FOUNDED!",
           })
         );
       }
-      return res.json(
+      return res.status(200).json(
         new ApiResponse({
           statusCode: 200,
           statusText: "ALL MENU LISTS",
@@ -48,9 +48,9 @@ export const getAllMenuItemsController = asyncHandler(
         })
       );
     } catch (error) {
-      return res.json(
+      return res.status(400).json(
         new ApiErrors({
-          statusCode: 500,
+          statusCode: 400,
           statusText: `ALL MENU ERROR, ${error}`,
         })
       );

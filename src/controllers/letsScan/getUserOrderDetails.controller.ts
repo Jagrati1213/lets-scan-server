@@ -14,7 +14,7 @@ export const getUserOrderDetailsController = asyncHandler(
 
       // VERIFY VENDER ID
       if (!mongoose.Types.ObjectId.isValid(orderId)) {
-        return res.json(
+        return res.status(400).json(
           new ApiErrors({
             statusCode: 400,
             statusText: "INVALID ORDER ID",
@@ -26,9 +26,11 @@ export const getUserOrderDetailsController = asyncHandler(
       const order = await OrderCollection.findById(orderId);
 
       if (!order) {
-        return res.json(
-          new ApiErrors({ statusCode: 400, statusText: "ORDER NOT EXISTS!" })
-        );
+        return res
+          .status(404)
+          .json(
+            new ApiErrors({ statusCode: 400, statusText: "ORDER NOT FOUNDED!" })
+          );
       }
 
       // RETRIEVE VENDOR RESTAURANT
@@ -36,13 +38,18 @@ export const getUserOrderDetailsController = asyncHandler(
 
       // IF VENDOR DOES NOT EXIST
       if (!vendor) {
-        return res.json(
-          new ApiErrors({ statusCode: 404, statusText: "VENDOR NOT FOUNDED!" })
-        );
+        return res
+          .status(404)
+          .json(
+            new ApiErrors({
+              statusCode: 404,
+              statusText: "VENDOR NOT FOUNDED!",
+            })
+          );
       }
 
       // RESPOND WITH ORDER DETAILS INCLUDING VENDOR RESTAURANT
-      return res.json(
+      return res.status(200).json(
         new ApiResponse({
           statusCode: 200,
           statusText: "ORDER DETAILS",
@@ -50,9 +57,14 @@ export const getUserOrderDetailsController = asyncHandler(
         })
       );
     } catch (error) {
-      return res.json(
-        new ApiErrors({ statusCode: 400, statusText: "ERROR IN GET DETAILS!" })
-      );
+      return res
+        .status(400)
+        .json(
+          new ApiErrors({
+            statusCode: 400,
+            statusText: "ERROR IN GET DETAILS!",
+          })
+        );
     }
   }
 );
