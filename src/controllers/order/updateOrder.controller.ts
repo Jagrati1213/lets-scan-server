@@ -26,7 +26,7 @@ export const updateOrderController = asyncHandler(
       // VERIFY VENDOR ID
       const currentVendor = await vendorCollection.findById(vendorId);
       if (!mongoose.Types.ObjectId.isValid(vendorId) || !currentVendor) {
-        return res.json(
+        return res.status(404).json(
           new ApiErrors({
             statusCode: 404,
             statusText: "INVALID VENDOR ID",
@@ -36,7 +36,7 @@ export const updateOrderController = asyncHandler(
 
       // VERIFY THE FIELDS
       if (!name || !email || !orderList || !orderList?.length || !totalAmount) {
-        return res.json(
+        return res.status(400).json(
           new ApiErrors({
             statusCode: 400,
             statusText: "ALL FIELDS ARE REQUIRED!",
@@ -46,10 +46,10 @@ export const updateOrderController = asyncHandler(
 
       // VERIFY PAYMENT DETAILS
       if (!paymentId) {
-        return res.json(
+        return res.status(400).json(
           new ApiErrors({
             statusCode: 400,
-            statusText: "PROVIDE PAYMENT DETAILS!",
+            statusText: "PAYMENT ID MISSING!",
           })
         );
       }
@@ -80,7 +80,7 @@ export const updateOrderController = asyncHandler(
       );
 
       if (!createOrder) {
-        return res.json(
+        return res.status(400).json(
           new ApiErrors({
             statusCode: 400,
             statusText: "ORDER NOT PLACED, TRY AGAIN!",
@@ -103,7 +103,7 @@ export const updateOrderController = asyncHandler(
       );
 
       // RETURN CREATED ORDER
-      return res.json(
+      return res.status(201).json(
         new ApiResponse({
           statusCode: 201,
           statusText: "ORDER PLACED SUCCESSFULLY!",
@@ -111,7 +111,7 @@ export const updateOrderController = asyncHandler(
         })
       );
     } catch (error) {
-      return res.json(
+      return res.status(400).json(
         new ApiErrors({
           statusCode: 400,
           statusText: `ERROR IN ORDER!, ${error}`,

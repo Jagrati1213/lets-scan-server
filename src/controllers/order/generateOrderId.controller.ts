@@ -16,7 +16,7 @@ export const generateOrderIdController = asyncHandler(
 
       // RETURN IF VENDOR ID NOT EXIST
       if (!mongoose.Types.ObjectId.isValid(vendorId) || !currentVendor) {
-        return res.json(
+        return res.status(404).json(
           new ApiErrors({
             statusCode: 404,
             statusText: "INVALID VENDOR ID",
@@ -25,7 +25,7 @@ export const generateOrderIdController = asyncHandler(
       }
 
       if (!amount) {
-        return res.json(
+        return res.status(404).json(
           new ApiErrors({
             statusText: "TOTAL AMOUNT IS MISSING!",
             statusCode: 404,
@@ -55,7 +55,7 @@ export const generateOrderIdController = asyncHandler(
       const order = await razorPayInstance.orders.create(options);
 
       if (!order) {
-        return res.json(
+        return res.status(400).json(
           new ApiErrors({
             statusCode: 400,
             statusText: "ORDER NOT CREATED BY RAZOR PAY",
@@ -64,7 +64,7 @@ export const generateOrderIdController = asyncHandler(
       }
 
       // RETURN ORDER DATA TO CLIENT
-      return res.json(
+      return res.status(200).json(
         new ApiResponse({
           statusCode: 200,
           statusText: "RAZOR ORDER DETAILS",
@@ -74,10 +74,10 @@ export const generateOrderIdController = asyncHandler(
         })
       );
     } catch (error) {
-      return res.json(
+      return res.status(400).json(
         new ApiErrors({
           statusText: "ERROR IN RAZOR ORDER CREATION!",
-          statusCode: 500,
+          statusCode: 400,
         })
       );
     }

@@ -22,7 +22,7 @@ export const paymentVerifyController = asyncHandler(
 
       // RETURN IF VENDOR ID NOT EXIST
       if (!mongoose.Types.ObjectId.isValid(vendorId) || !currentVendor) {
-        return res.json(
+        return res.status(404).json(
           new ApiErrors({
             statusCode: 404,
             statusText: "INVALID VENDOR ID",
@@ -32,9 +32,11 @@ export const paymentVerifyController = asyncHandler(
 
       //  CHECK VALUES
       if (!razorpay_payment_id || !razorpay_order_id || !razorpay_signature) {
-        return res.json(
-          new ApiErrors({ statusCode: 400, statusText: "DATA IS MISSING!" })
-        );
+        return res
+          .status(400)
+          .json(
+            new ApiErrors({ statusCode: 400, statusText: "DATA IS MISSING!" })
+          );
       }
 
       // CHECK ENV VALUES
@@ -50,10 +52,10 @@ export const paymentVerifyController = asyncHandler(
 
       // STORE IN DATABASE & REDIRECT TO CLIENT
       if (!generated_signature == razorpay_signature) {
-        return res.json(
+        return res.status(400).json(
           new ApiErrors({
-            statusText: "TRANSACTION IS NOT DIGEST",
-            statusCode: 500,
+            statusText: "TRANSACTION IS NOT VALID",
+            statusCode: 400,
           })
         );
       }
@@ -67,7 +69,7 @@ export const paymentVerifyController = asyncHandler(
       });
 
       // RETURN RESPONSE TO CLIENT
-      return res.json(
+      return res.status(200).json(
         new ApiResponse({
           statusCode: 200,
           statusText: "PAYMENT SUCCESSFUL!",
@@ -77,10 +79,10 @@ export const paymentVerifyController = asyncHandler(
         })
       );
     } catch (error) {
-      return res.json(
+      return res.status(400).json(
         new ApiErrors({
           statusText: `ERROR IN RAZOR VERIFY CREATION!, ${error}`,
-          statusCode: 500,
+          statusCode: 400,
         })
       );
     }
