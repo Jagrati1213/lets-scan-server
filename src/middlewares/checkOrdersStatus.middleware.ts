@@ -1,20 +1,17 @@
 import { NextFunction, Response } from "express";
 import { asyncHandler } from "../utils/asyncHandler";
-import { vendorCollection } from "../models/vendor.model";
 import { CustomRequestT } from "../types";
 import { ApiErrors } from "../utils/apiErrors";
+import { OrderCollection } from "../models/order.module";
 
 export const checkOrdersStatus = asyncHandler(
   async (req: CustomRequestT, res: Response, next: NextFunction) => {
     try {
       //  CHECK ORDER STATUS
-      const currentVendorPendingOrders = await vendorCollection
-        .findById(req?.vendor?._id)
-        .populate({
-          path: "orders",
-          match: { orderStatus: "Pending" },
-        });
-
+      const currentVendorPendingOrders = await OrderCollection.exists({
+        vendorId: req.vendor?._id,
+        orderStatus: "Pending",
+      });
       if (currentVendorPendingOrders) {
         return res.status(400).json(
           new ApiErrors({
