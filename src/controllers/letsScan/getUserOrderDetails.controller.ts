@@ -5,6 +5,7 @@ import { OrderCollection } from "../../models/order.module";
 import { vendorCollection } from "../../models/vendor.model";
 import { ApiResponse } from "../../utils/apiResponse";
 import mongoose from "mongoose";
+import { menuCollection } from "../../models/menu.model";
 
 export const getUserOrderDetailsController = asyncHandler(
   async (req: Request, res: Response) => {
@@ -33,19 +34,31 @@ export const getUserOrderDetailsController = asyncHandler(
           );
       }
 
+      // GET MENU NAME
+      const menuIds = order.orderList.map((item) => item.menuId);
+      const menuDetails = await menuCollection
+        .find({ _id: { $in: menuIds } })
+        .lean();
+
+      const updatedOrderList = order.orderList.map((item) => {
+        const menu = menuDetails.find((menu) => menu._id.equals(item.menuId));
+        return {
+          ...item.toObject(),
+          name: menu ? menu.name : "Unknown",
+        };
+      });
+
       // RETRIEVE VENDOR RESTAURANT
       const vendor = await vendorCollection.findById(order.vendorId);
 
       // IF VENDOR DOES NOT EXIST
       if (!vendor) {
-        return res
-          .status(404)
-          .json(
-            new ApiErrors({
-              statusCode: 404,
-              statusText: "VENDOR NOT FOUNDED!",
-            })
-          );
+        return res.status(404).json(
+          new ApiErrors({
+            statusCode: 404,
+            statusText: "VENDOR NOT FOUNDED!",
+          })
+        );
       }
 
       // RESPOND WITH ORDER DETAILS INCLUDING VENDOR RESTAURANT
@@ -53,18 +66,19 @@ export const getUserOrderDetailsController = asyncHandler(
         new ApiResponse({
           statusCode: 200,
           statusText: "ORDER DETAILS",
-          data: { orderDetails: order, restaurant: vendor.restaurant },
+          data: {
+            orderDetails: { ...order.toObject(), orderList: updatedOrderList },
+            restaurant: vendor.restaurant,
+          },
         })
       );
     } catch (error) {
-      return res
-        .status(400)
-        .json(
-          new ApiErrors({
-            statusCode: 400,
-            statusText: "ERROR IN GET DETAILS!",
-          })
-        );
+      return res.status(400).json(
+        new ApiErrors({
+          statusCode: 400,
+          statusText: "ERROR IN GET DETAILS!",
+        })
+      );
     }
   }
 );
