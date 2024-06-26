@@ -1,5 +1,9 @@
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
+import { config } from "dotenv";
+
+// Load environment variables
+config();
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -25,6 +29,7 @@ export const uploadOnCloudinary = async (localFilePath: string) => {
   } catch (err) {
     // UNLINK FILES IN LOCALLY SAVED, IF CLOUDINARY FAILED
     fs.unlinkSync(localFilePath);
+    console.log("ERROR IN CLOUD", err);
     return null;
   }
 };
