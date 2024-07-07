@@ -56,7 +56,7 @@ export const updateOrderController = asyncHandler(
 
       // GENERATE TOKEN(6) & VERIFY CODE(4)
       const { token, verifyCode } = generateOrderTokenAndCode({
-        tokenLength: 6,
+        tokenLength: 3,
         codeLength: 4,
       });
 

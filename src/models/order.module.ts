@@ -37,7 +37,7 @@ const orderSchema = new Schema(
     customer: customerSchema,
     orderList: [orderItemSchema],
     orderToken: {
-      type: String,
+      type: Number,
       unique: true,
     },
     verifyCode: {
