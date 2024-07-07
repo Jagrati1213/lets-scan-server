@@ -37,7 +37,7 @@ export const getVendorDetailsController = asyncHandler(
       });
 
       // IF ORDER HAVE
-      if (orders) {
+      if (orders.length) {
         // CALCULATE ORDERS
         totalOrders = orders.length;
 
@@ -70,14 +70,20 @@ export const getVendorDetailsController = asyncHandler(
         { $sort: { totalQuantity: -1 } },
         { $limit: 1 },
       ]);
-      const bestMenuItem = await menuCollection.findById(
-        bestSellingItem[0]._id
-      );
-      if (!bestSellingItem || !bestMenuItem) {
-        item = "No Best Selling Item";
+
+      if (bestSellingItem.length > 0) {
+        const bestMenuItem = await menuCollection.findById(
+          bestSellingItem[0]._id
+        );
+        if (!bestMenuItem) {
+          item = "No Best Selling Item";
+        } else {
+          item = bestMenuItem.name;
+        }
       } else {
-        item = bestMenuItem.name;
+        item = "No Best Selling Item";
       }
+
       return res.status(200).json(
         new ApiResponse({
           statusCode: 200,
