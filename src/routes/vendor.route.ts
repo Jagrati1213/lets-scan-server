@@ -10,6 +10,7 @@ import { getAllOrdersController } from "../controllers/vendorOrder/getAllOrders.
 import { updateOrderSuccessController } from "../controllers/vendorOrder/updateOrderSuccess.controller";
 import { getAllTransitionsController } from "../controllers/transitions/getAllTransitions.controller";
 import { checkOrdersStatus } from "../middlewares/checkOrdersStatus.middleware";
+import { getOrdersGraphController } from "../controllers/vendor/getOrdersGraph.controller";
 
 export const vendorRouter = express.Router();
 
@@ -44,3 +45,6 @@ vendorRouter.put("/order/verify", vendorVerify, updateOrderSuccessController);
 
 // GET TRANSITIONS
 vendorRouter.get("/transitions", vendorVerify, getAllTransitionsController);
+
+// GET ORDERS GRAPH
+vendorRouter.get("/orders-graph", vendorVerify, getOrdersGraphController);
