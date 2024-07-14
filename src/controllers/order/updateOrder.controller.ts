@@ -54,8 +54,18 @@ export const updateOrderController = asyncHandler(
         );
       }
 
-      // GENERATE TOKEN(6) & VERIFY CODE(4)
-      const { token, verifyCode } = generateOrderTokenAndCode({
+      // GENERATE TOKEN & VERIFY CODE(4)
+      const lastOrder = await OrderCollection.findOne().sort({ createdAt: -1 });
+      // Increment the last token
+      let newToken: number;
+      if (lastOrder && lastOrder.orderToken) {
+        const lastToken = lastOrder.orderToken;
+        newToken = lastToken + 1;
+      } else {
+        newToken = 1;
+      }
+
+      const { verifyCode } = generateOrderTokenAndCode({
         tokenLength: 3,
         codeLength: 4,
       });
@@ -65,7 +75,7 @@ export const updateOrderController = asyncHandler(
         customer: { name, email },
         tableNumber: tableNumber,
         note: note,
-        orderToken: token,
+        orderToken: newToken,
         verifyCode: verifyCode,
         orderStatus: "Pending",
         orderList: orderList,
