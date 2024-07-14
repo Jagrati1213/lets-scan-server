@@ -5,6 +5,11 @@ import { ApiErrors } from "../../utils/apiErrors";
 import { ApiResponse } from "../../utils/apiResponse";
 import { asyncHandler } from "../../utils/asyncHandler";
 
+// GET MONTH
+const getMonthString = (date: Date) => {
+  return date.getMonth() + 1;
+};
+
 export const getOrdersGraphController = asyncHandler(
   async (req: CustomRequestT, res: Response) => {
     try {
@@ -20,26 +25,13 @@ export const getOrdersGraphController = asyncHandler(
 
       // SET START & END DATE
       const end = new Date(startDate);
-      const start = new Date(end);
-      start.setDate(start.getDate() - 6); //PAST 7 DAYS
+      const start = new Date(end.getFullYear(), 0, 1); // CURRENT YEAR
 
       const result: {
-        date: string;
+        month: number;
         totalOrders: number;
         totalAmount: number;
       }[] = [];
-      for (
-        let date = new Date(start);
-        date <= end;
-        date.setDate(date.getDate() + 1)
-      ) {
-        const dateString = date.toISOString().split("T")[0];
-        result.push({
-          date: dateString,
-          totalOrders: 0,
-          totalAmount: 0,
-        });
-      }
 
       const orders = await OrderCollection.find({
         vendorId: req.vendor?._id,
@@ -51,11 +43,17 @@ export const getOrdersGraphController = asyncHandler(
 
       // CONVERT AGGREGATE DATA TO ARRAY FORMAT
       orders.forEach((order) => {
-        const date = order.createdAt.toISOString().split("T")[0];
-        const index = result.findIndex((item) => item.date === date);
-        if (index !== -1 && order.totalAmount) {
+        const month = getMonthString(order.createdAt);
+        const index = result.findIndex((item) => item.month === month);
+        if (index === -1) {
+          result.push({
+            month: month,
+            totalOrders: 1,
+            totalAmount: order.totalAmount || 0,
+          });
+        } else {
           result[index].totalOrders += 1;
-          result[index].totalAmount += order.totalAmount;
+          result[index].totalAmount += order.totalAmount || 0;
         }
       });
 
