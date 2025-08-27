@@ -16,12 +16,19 @@ const port = process.env.PORT || 4000;
 // Middlewares
 // Handle cors origin
 // app.use(cors());
-app.use(cors({
+// app.use(cors({
+//   origin: [
+//     "http://localhost:3000", // your local frontend
+//     "https://lets-scan-dashboard.vercel.app" // deployed frontend domain (change if different)
+//   ],
+//   credentials: true, // allow cookies to be sent
+// }));
+app.options("*", cors({
   origin: [
-    "http://localhost:3000", // your local frontend
-    "https://lets-scan-dashboard.vercel.app" // deployed frontend domain (change if different)
+    "http://localhost:3000",
+    "https://lets-scan-dashboard.vercel.app"
   ],
-  credentials: true, // allow cookies to be sent
+  credentials: true,
 }));
 
 
