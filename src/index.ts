@@ -26,7 +26,8 @@ const port = process.env.PORT || 4000;
 app.options("*", cors({
   origin: [
     "http://localhost:3000",
-    "https://lets-scan-dashboard.vercel.app"
+    "https://lets-scan-dashboard.vercel.app",
+    "*"
   ],
   credentials: true,
 }));
