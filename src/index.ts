@@ -15,6 +15,13 @@ const port = process.env.PORT || 4000;
 
 // Middlewares
 // Handle cors origin
+    const corsOptions = {
+        origin: '*', // Specify the allowed origin(s)
+        methods: ['*'], // Allowed HTTP methods
+        // allowedHeaders: ['Content-Type', 'Authorization'], // Allowed request headers
+        credentials: true // Allow cookies or other credentials
+    };
+   app.use(cors(corsOptions));
 // app.use(cors());
 // app.use(cors({
 //   origin: [
@@ -23,14 +30,14 @@ const port = process.env.PORT || 4000;
 //   ],
 //   credentials: true, // allow cookies to be sent
 // }));
-app.options("*", cors({
-  origin: [
-    "http://localhost:3000",
-    "https://lets-scan-dashboard.vercel.app",
-    "*"
-  ],
-  credentials: true,
-}));
+// app.options("*", cors({
+//   origin: [
+//     "http://localhost:3000",
+//     "https://lets-scan-dashboard.vercel.app",
+//     "*"
+//   ],
+//   credentials: true,
+// }));
 
 
 // Handle json as request
